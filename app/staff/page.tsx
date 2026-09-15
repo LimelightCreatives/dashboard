@@ -1,10 +1,10 @@
-import { redirect } from "next/navigation";
-import { getSession, hasRole } from "@/lib/auth";
+import { headers } from "next/headers";
 import { staffApps } from "@/lib/apps";
 import Launchpad from "@/components/launchpad";
 
 export default async function StaffPage() {
-  const session = await getSession();
-  if (!hasRole(session, "staff")) redirect("/");
-  return <Launchpad apps={staffApps} />;
-}O", href
+  const headersList = await headers();
+  const name = headersList.get("x-user-name");
+
+  return <Launchpad apps={staffApps}/>;
+}
