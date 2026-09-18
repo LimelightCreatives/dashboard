@@ -77,7 +77,7 @@ export async function middleware(req: NextRequest) {
   // Role gating per path prefix.
   const { pathname } = req.nextUrl;
 
-  if (pathname.startsWith("/staff") && session.role !== "ADMIN") {
+  if (pathname.startsWith("/staff") && (session.role !== "ADMIN" && session.role !== "STAFF")) {
     return NextResponse.redirect(new URL("/participant", req.url));
   }
 
@@ -85,9 +85,6 @@ export async function middleware(req: NextRequest) {
     return loginRedirect(req);
   }
 
-  // Pass the verified session down to pages/layouts via headers, so they
-  // don't need to re-fetch it themselves for rendering (e.g. showing the
-  // user's name) — just read these instead of calling the auth API again.
   const response = NextResponse.next();
   response.headers.set("x-user-id", session.id ?? "");
   response.headers.set("x-user-email", session.email ?? "");
@@ -97,7 +94,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  // Runs on every route except static assets/images/etc. Adjust if you
-  // have public marketing pages in this project that shouldn't require auth.
   matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };
