@@ -26,9 +26,9 @@ function AppTile({ app }: { app: AppLink }) {
   const content = (
     <div className="group flex w-24 flex-col items-center gap-3 text-center sm:w-28">
       <div className="relative aspect-square w-full">
-        <div className="absolute inset-0 translate-x-0 translate-y-0 bg-[var(--foreground)] transition-transform duration-150 group-hover:translate-x-2 group-hover:translate-y-2" />
+        <div className="absolute inset-0 translate-x-0 translate-y-0 bg-[var(--foreground)] transition-transform duration-150 group-hover:translate-x-1 group-hover:translate-y-1" />
         <div className="absolute inset-0 flex items-center justify-center border-2 border-[var(--foreground)] bg-[var(--background)] transition-transform duration-150 group-hover:-translate-x-[2px] group-hover:-translate-y-[2px]">
-          <Image src="/onboard.svg" alt="" fill className="object-cover" />
+          <Image src={app.icon} alt="" fill className="object-cover" />
         </div>
       </div>
       <span className="max-w-xl text-xl font-body font-bold">{app.name}</span>

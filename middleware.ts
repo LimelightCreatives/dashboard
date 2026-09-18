@@ -19,6 +19,11 @@ type PermissionResponse = {
 };
 
 async function fetchSession(token: string): Promise<PermissionResponse> {
+  if (process.env.NODE_ENV === "development" && process.env.DEV_BYPASS_AUTH === "true") {
+    console.log("dev mode")
+    return { authenticated: true, id: "0", email: "test@example.com", 
+        name: "Test User", role: process.env.DEV_ROLE, needsProfile: false};
+  }
   try {
     const res = await fetch(`${AUTH_API}/permission`, {
       headers: { Cookie: `${SESSION_COOKIE_NAME}=${token}` },
@@ -41,13 +46,25 @@ function loginRedirect(req: NextRequest, extraParams?: Record<string, string>) {
 }
 
 export async function middleware(req: NextRequest) {
+  const devBypass =
+    process.env.NODE_ENV === "development" && process.env.DEV_BYPASS_AUTH === "true";
+
   const token = req.cookies.get(SESSION_COOKIE_NAME)?.value;
 
-  if (!token) {
+  if (!token && !devBypass) {
     return loginRedirect(req);
   }
 
-  const session = await fetchSession(token);
+  const session = devBypass
+    ? {
+        authenticated: true,
+        id: "0",
+        email: "test@example.com",
+        name: "Test User",
+        role: process.env.DEV_ROLE,
+        needsProfile: false,
+      }
+    : await fetchSession(token!);
 
   if (!session.authenticated) {
     return loginRedirect(req);

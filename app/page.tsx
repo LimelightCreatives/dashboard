@@ -5,5 +5,5 @@ export default async function RootPage() {
   const headersList = await headers();
   const role = headersList.get("x-user-role");
 
-  redirect(role === "ADMIN" ? "/staff" : "/participant");
+  redirect(role === "ADMIN" || role === "STAFF" ? "/staff" : "/participant")
 }
