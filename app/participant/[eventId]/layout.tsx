@@ -1,9 +1,6 @@
-"use client";
-
-import { useParams } from "next/navigation";
-
-import { getEventConfig, listEvents } from "@/lib/events";
-import { Topbar } from "@/components/dashboard/Topbar";
+import { headers } from "next/headers";
+import { getEventConfig } from "@/lib/events";
+import { ClientTopbar } from "@/components/dashboard/ClientTopbar"; // Import the wrapper
 import { DashboardTabs } from "@/components/dashboard/DashboardTabs";
 import { EventThemeProvider } from "@/components/dashboard/EventThemeProvider";
 
@@ -14,33 +11,34 @@ const TABS = [
   { label: "Team", href: "team" },
 ];
 
-export default function EventDashboardLayout({
+export default async function EventDashboardLayout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: Promise<{ eventId: string }>;
 }) {
-  const params = useParams();
-  const eventId = typeof params.eventId === "string" ? params.eventId : "";
+  const resolvedParams = await params;
+  const eventId = resolvedParams.eventId ?? "";
   const event = getEventConfig(eventId);
 
-  // Temporary debug fallback instead of a silent notFound() — once routing is confirmed
-  // working, this can go back to calling notFound() from "next/navigation".
+  const headersList = await headers();
+  const userName = headersList.get("x-user-name") || "User Unavailable";
+  const userEmail = headersList.get("x-user-email") || "unavailable";
+  const user = { name: userName, email: userEmail };
+
   if (!event) {
     return (
       <div className="p-10 font-body text-sm">
-        <p>
-          The event <strong>&quot;{eventId}&quot;</strong> is either not a thing or has concluded.
-        </p>
+        <p>The event <strong>&quot;{eventId}&quot;</strong> is either not a thing or has concluded.</p>
       </div>
     );
   }
 
-  // TODO: replace with the signed-in participant from your auth/session provider
-  const user = { name: "Test User", email: "test@example.com" };
-
   return (
     <div className="min-h-screen">
-      <Topbar user={user} onLogout={() => { /* TODO: wire up sign-out */ }} />
+      {/* Pass user to the client wrapper instead of passing functions */}
+      <ClientTopbar user={user} />
 
       <EventThemeProvider theme={event.theme}>
         <div className="border-b border-[var(--border)]">
