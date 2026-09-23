@@ -1,4 +1,4 @@
-import type { EventTheme } from "@/lib";
+import type { EventTheme } from "@/lib/events";
 
 /**
  * Overrides the generic `--accent` token (and optional `--accent-secondary`) for its children only.

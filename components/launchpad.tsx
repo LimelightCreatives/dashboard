@@ -53,7 +53,7 @@ interface LaunchpadProps {
 }
 
 export default function Launchpad({ apps, header }: LaunchpadProps) {
-  const user = { name: header?.["x-user-name"], email: header?.["x-user-email"] };
+  const user = { name: header?.["x-user-name"] || "User Unavailable", email: header?.["x-user-email"] || "unavailable"};
 
   return (
     <main className="flex h-screen flex-col overflow-hidden">
