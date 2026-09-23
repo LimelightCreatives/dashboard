@@ -38,7 +38,7 @@ export default async function EventDashboardLayout({
   return (
     <div className="min-h-screen">
       {/* Pass user to the client wrapper instead of passing functions */}
-      <ClientTopbar user={user} />
+      <ClientTopbar user={user} label={event.name} />
 
       <EventThemeProvider theme={event.theme}>
         <div className="border-b border-[var(--border)]">

@@ -3,7 +3,12 @@
 import { Topbar } from "@/components/dashboard/Topbar";
 import { useRouter } from "next/navigation";
 
-export function ClientTopbar({ user }: { user: { name: string; email: string } }) {
+interface ClientTopbarProps {
+  user: { name: string; email: string };
+  label: string;
+}
+
+export function ClientTopbar({ user, label }: ClientTopbarProps) {
   const router = useRouter();
 
   const handleLogout = () => {
@@ -11,5 +16,5 @@ export function ClientTopbar({ user }: { user: { name: string; email: string } }
     router.push("/login");
   };
 
-  return <Topbar user={user} onLogout={handleLogout} />;
+  return <Topbar user={user} label={label} onLogout={handleLogout} />;
 }
