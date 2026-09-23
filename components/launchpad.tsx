@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { Topbar } from "@/components/dashboard/Topbar";
 
 export type AppLink = {
   name: string;
@@ -44,18 +47,29 @@ function AppTile({ app }: { app: AppLink }) {
   );
 }
 
-export default function Launchpad({ apps }: { apps: AppLink[] }) {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-center px-6 py-24 text-center">
-      <h1 className="relative mt-4 inline-block font-display text-[clamp(2.75rem,6vw,4.5rem)] font-bold leading-[0.9] tracking-[-0.06em]">
-        Welcome!
-        <LaunchpadSquiggle className="pointer-events-none absolute left-0 top-full mt-1 h-auto w-full text-[var(--ontik-accent)]" />
-      </h1>
+interface LaunchpadProps {
+  apps: AppLink[];
+  header?: Record<string, string>; // Accept serialized header key-value pairs in client components
+}
 
-      <div className="mt-20 flex flex-wrap justify-center gap-x-8 gap-y-12">
-        {apps.map((app) => (
-          <AppTile key={app.name} app={app} />
-        ))}
+export default function Launchpad({ apps, header }: LaunchpadProps) {
+  const user = { name: header?.["x-user-name"], email: header?.["x-user-email"] };
+
+  return (
+    <main className="flex h-screen flex-col overflow-hidden">
+      <Topbar user={user} onLogout={() => { /* TODO: wire up sign-out */ }} />
+      
+      <div className="flex flex-1 flex-col items-center justify-center px-6 py-12 text-center overflow-y-auto">
+        <h1 className="relative mt-4 inline-block font-display text-[clamp(2.75rem,6vw,4.5rem)] font-bold leading-[0.9] tracking-[-0.06em]">
+          Welcome!
+          <LaunchpadSquiggle className="pointer-events-none absolute left-0 top-full mt-1 h-auto w-full text-[var(--ontik-accent)]" />
+        </h1>
+
+        <div className="mt-16 flex flex-wrap justify-center gap-x-8 gap-y-12">
+          {apps.map((app) => (
+            <AppTile key={app.name} app={app} />
+          ))}
+        </div>
       </div>
     </main>
   );
