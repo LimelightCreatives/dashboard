@@ -50,29 +50,32 @@ export function DashboardShell({
                   active
                     ? "border-[var(--accent)] text-[var(--foreground)]"
                     : "border-transparent text-[var(--foreground)]/50 hover:text-[var(--foreground)]"
-                }`}
+                } ${pending ? "opacity-60" : ""}`}
               >
-                <span className={pending ? "opacity-60" : undefined}>
-                  {tab.label}
-                </span>
-                {pending && (
-                  <span
-                    aria-hidden
-                    className="h-3 w-3 shrink-0 animate-spin rounded-full border-[1.5px] border-[var(--foreground)]/30 border-t-[var(--accent)]"
-                  />
-                )}
+                {tab.label}
               </Link>
             );
           })}
         </nav>
       </aside>
 
-      <main
-        className={`flex-1 px-6 py-10 transition-opacity duration-150 md:px-16 md:py-14 ${
-          pendingHref ? "opacity-50" : "opacity-100"
-        }`}
-      >
-        {children}
+      <main className="relative flex-1 px-6 py-10 md:px-16 md:py-14">
+        <div
+          className={`transition-opacity duration-150 ${
+            pendingHref ? "opacity-40" : "opacity-100"
+          }`}
+        >
+          {children}
+        </div>
+
+        {pendingHref && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span
+              aria-hidden
+              className="h-8 w-8 animate-spin rounded-full border-2 border-[var(--foreground)]/20 border-t-[var(--accent)]"
+            />
+          </div>
+        )}
       </main>
     </div>
   );
