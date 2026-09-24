@@ -38,7 +38,7 @@ export default function ProjectPage() {
     <div>
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="font-display text-4xl md:text-5xl">Your project</h1>
+          <h1 className="font-display font-bold text-4xl md:text-5xl">Your project</h1>
           <p className="mt-2 max-w-xl font-body text-sm text-[var(--foreground)]/70">
             Every team submits a single project — you can update the details until submissions close.
           </p>

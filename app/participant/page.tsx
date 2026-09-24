@@ -12,5 +12,5 @@ import Launchpad from "@/components/launchpad";
 
 // genesis event
 export default function ParticipantPage() {
-  redirect("/participant/genesis/milestones");
+  redirect("/participant/genesis/project");
 }

@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 import { getEventConfig } from "@/lib/events";
 import { ClientTopbar } from "@/components/dashboard/ClientTopbar"; // Import the wrapper
-import { DashboardTabs } from "@/components/dashboard/DashboardTabs";
+import { DashboardShell } from "@/components/dashboard/DashboardShell";
 import { EventThemeProvider } from "@/components/dashboard/EventThemeProvider";
 
 const TABS = [
@@ -30,7 +30,10 @@ export default async function EventDashboardLayout({
   if (!event) {
     return (
       <div className="p-10 font-body text-sm">
-        <p>The event <strong>&quot;{eventId}&quot;</strong> is either not a thing or has concluded.</p>
+        <p>
+          The event <strong>&quot;{eventId}&quot;</strong> is either not a
+          thing or has concluded.
+        </p>
       </div>
     );
   }
@@ -41,10 +44,9 @@ export default async function EventDashboardLayout({
       <ClientTopbar user={user} label={event.name} />
 
       <EventThemeProvider theme={event.theme}>
-        <div className="border-b border-[var(--border)]">
-          <DashboardTabs basePath={`/participant/${event.id}`} tabs={TABS} />
-        </div>
-        <main className="px-6 py-10 md:px-16 md:py-14">{children}</main>
+        <DashboardShell basePath={`/participant/${event.id}`} tabs={TABS}>
+          {children}
+        </DashboardShell>
       </EventThemeProvider>
     </div>
   );

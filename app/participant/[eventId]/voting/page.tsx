@@ -34,7 +34,7 @@ export default function VotingPage() {
 
   return (
     <div>
-      <h1 className="font-display text-4xl md:text-5xl">Voting</h1>
+      <h1 className="font-display font-bold text-4xl md:text-5xl">Voting</h1>
       <p className="mt-2 max-w-xl font-body text-sm text-[var(--foreground)]/70">
         Watch the submissions and cast your vote for your favourite film. You can change your vote until voting closes.
       </p>

@@ -11,7 +11,7 @@ export default function MilestonesPage() {
 
   return (
     <div>
-      <h1 className="font-display text-4xl md:text-5xl">Milestones</h1>
+      <h1 className="font-display font-bold text-4xl md:text-5xl">Milestones</h1>
       <p className="mt-2 max-w-xl font-body text-sm text-[var(--foreground)]/70">
         Key dates and checkpoints for {event.name}.
       </p>

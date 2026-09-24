@@ -41,12 +41,12 @@ export function Topbar({ label = "Dashboard", user, onLogout }: TopbarProps) {
           onClick={() => setOpen((prev) => !prev)}
           aria-expanded={open}
           aria-haspopup="menu"
-          className="flex items-center gap-3 rounded-none px-2 py-1 font-body text-sm transition-colors hover:bg-[var(--surface-hover)]"
+          className="flex items-center gap-2 rounded-none px-1 py-1 font-body text-sm transition-colors hover:bg-[var(--surface-hover)]"
         >
           <span className="flex h-8 w-8 items-center justify-center border-[2px] border-[var(--foreground)] bg-[var(--surface)] font-display text-xs">
             {initials || "?"}
           </span>
-          <span className="hidden sm:inline">{user.name}</span>
+          <span className="hidden sm:inline px-1">{user.name}</span>
         </button>
 
         {open ? (

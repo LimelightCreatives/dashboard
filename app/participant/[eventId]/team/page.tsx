@@ -62,7 +62,7 @@ export default function TeamPage() {
 
   return (
     <div>
-      <h1 className="font-display text-4xl md:text-5xl">Team</h1>
+      <h1 className="font-display font-bold text-4xl md:text-5xl">Team</h1>
       <p className="mt-2 max-w-xl font-body text-sm text-[var(--foreground)]/70">
         Join an existing team or start your own.
       </p>
