@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Topbar } from "@/components/dashboard/Topbar";
+import { logoutAction } from "@/app/actions/auth";
 
 export type AppLink = {
   name: string;
@@ -57,7 +58,7 @@ export default function Launchpad({ apps, header }: LaunchpadProps) {
 
   return (
     <main className="flex h-screen flex-col overflow-hidden">
-      <Topbar user={user} onLogout={() => { /* TODO: wire up sign-out */ }} />
+      <Topbar user={user} onLogout={() => logoutAction()} />
       
       <div className="flex flex-1 flex-col items-center justify-center px-6 py-12 text-center overflow-y-auto">
         <h1 className="relative mt-4 inline-block font-display text-[clamp(2.75rem,6vw,4.5rem)] font-bold leading-[0.9] tracking-[-0.06em]">

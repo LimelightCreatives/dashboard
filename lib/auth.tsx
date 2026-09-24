@@ -17,6 +17,10 @@ const SESSION_COOKIE_NAME =
     ? "__Secure-authjs.session-token"
     : "authjs.session-token";
 
+// Must match the `domain` used when the cookie was set (see auth.ts
+// cookies config) so the browser actually deletes it, e.g. ".limelightcreatives.org".
+const ROOT_DOMAIN = process.env.AUTH_COOKIE_DOMAIN;
+
 const EMPTY_SESSION: Session = {
   authenticated: false,
   id: null,
@@ -35,9 +39,6 @@ export async function getSession(): Promise<Session> {
   try {
     const res = await fetch(`${AUTH_API}/permission`, {
       headers: {
-        // Server-to-server: forward the raw session cookie so the auth
-        // server's NextAuth instance can verify it directly. No bearer
-        // tokens in this system.
         Cookie: `${SESSION_COOKIE_NAME}=${token}`,
       },
       cache: "no-store",
@@ -59,6 +60,22 @@ export async function getSession(): Promise<Session> {
   } catch {
     return EMPTY_SESSION;
   }
+}
+
+// Deletes the shared session cookie. Must be called from a Server Action
+// or Route Handler (next/headers cookies() is write-able only in those
+// contexts, not in Server Components).
+export async function logout(): Promise<void> {
+  const cookieStore = await cookies();
+
+  cookieStore.set(SESSION_COOKIE_NAME, "", {
+    domain: ROOT_DOMAIN,
+    path: "/",
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    expires: new Date(0),
+  });
 }
 
 export function hasRole(session: Session, role: string) {
