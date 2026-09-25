@@ -21,8 +21,8 @@ type PermissionResponse = {
 async function fetchSession(token: string): Promise<PermissionResponse> {
   if (process.env.NODE_ENV === "development" && process.env.DEV_BYPASS_AUTH === "true") {
     console.log("dev mode")
-    return { authenticated: true, id: "0", email: "test@example.com", 
-        name: "Test User", role: process.env.DEV_ROLE, needsProfile: false};
+    return { authenticated: true, id: "0", email: "supercooldeveloper@limelightcreatives.org", 
+        name: "Development User", role: process.env.DEV_ROLE, needsProfile: false};
   }
   try {
     const res = await fetch(`${AUTH_API}/permission`, {
@@ -59,8 +59,8 @@ export async function middleware(req: NextRequest) {
     ? {
         authenticated: true,
         id: "0",
-        email: "test@example.com",
-        name: "Test User",
+        email: "supercooldeveloper@limelightcreatives.org",
+        name: "Development User",
         role: process.env.DEV_ROLE,
         needsProfile: false,
       }

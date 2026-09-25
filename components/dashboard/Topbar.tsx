@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { Button } from "@/components/Button"; // adjust import path to wherever Button actually lives
+import Image from "next/image";
+import Link from "next/link";
 
 type TopbarUser = {
   name: string;
@@ -33,7 +35,16 @@ export function Topbar({ label = "Dashboard", user, onLogout }: TopbarProps) {
 
   return (
     <header className="flex items-center justify-between border-b border-[var(--border)] bg-[var(--background)] px-6 py-4 md:px-16">
-      <span className="font-display text-lg tracking-tight">{label}</span>
+      <Link href="/">
+        <Image
+          src="/branding/logo.svg"
+          alt="Limelight Creatives"
+          width={52}
+          height={52}
+          priority
+        />
+      </Link>
+      {/* <span className="font-display text-lg tracking-tight">{label}</span> */}
 
       <div className="relative">
         <button
