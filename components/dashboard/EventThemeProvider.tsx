@@ -14,6 +14,7 @@ export function EventThemeProvider({
 }) {
   return (
     <div
+      className="flex flex-1 flex-col"
       style={
         {
           "--accent": theme.accent,
