@@ -11,21 +11,23 @@ export const genesisEvent: EventConfig = {
   teamSize: 3,
   milestones: [
     {
-      id: "rsvp",
-      date: "August 30",
-      label: "RSVPs open",
+      id: "test",
+      date: "00:00",
+      label: "Test",
       completed: true,
     },
     {
-      id: "registration",
-      date: "October 18",
-      label: "Registration form sent",
+      id: "incomplete milestone",
+      date: "00:00",
+      label: "incomplete milestone",
+      completed: false,
     },
     {
-      id: "opening",
-      date: "October 24–25",
-      label: "Event opening day",
-      description: "Doors open 8:30am on both days.",
+      id: "really really really long milestone name",
+      date: "00:00",
+      label: "really really really long milestone name",
+      completed: false,
     },
+    
   ],
 };

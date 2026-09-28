@@ -1,14 +1,17 @@
 import { headers } from "next/headers";
 import { getEventConfig } from "@/lib/events";
-import { ClientTopbar } from "@/components/dashboard/ClientTopbar"; // Import the wrapper
-import { DashboardShell } from "@/components/dashboard/DashboardShell";
+import { ClientTopbar } from "@/components/dashboard/ClientTopbar";
+import {
+  DashboardShell,
+  type DashboardTab,
+} from "@/components/dashboard/DashboardShell";
 import { EventThemeProvider } from "@/components/dashboard/EventThemeProvider";
 
-const TABS = [
-  { label: "Milestones", href: "milestones" },
-  { label: "Project", href: "project" },
-  { label: "Voting", href: "voting" },
-  { label: "Team", href: "team" },
+const TABS: DashboardTab[] = [
+  { label: "Milestones", href: "milestones", icon: "milestones" },
+  { label: "Project", href: "project", icon: "project" },
+  { label: "Voting", href: "voting", icon: "voting" },
+  { label: "Team", href: "team", icon: "team" },
 ];
 
 export default async function EventDashboardLayout({
@@ -39,8 +42,7 @@ export default async function EventDashboardLayout({
   }
 
   return (
-    <div className="min-h-screen">
-      {/* Pass user to the client wrapper instead of passing functions */}
+    <div className="flex min-h-screen flex-col">
       <ClientTopbar user={user} label={event.name} />
 
       <EventThemeProvider theme={event.theme}>

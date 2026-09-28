@@ -13,7 +13,7 @@ export default function MilestonesPage() {
     <div>
       <h1 className="font-display font-bold text-4xl md:text-5xl">Milestones</h1>
       <p className="mt-2 max-w-xl font-body text-sm text-[var(--foreground)]/70">
-        Key dates and checkpoints for {event.name}.
+        Milestones.
       </p>
 
       <ol className="mt-10 space-y-4">

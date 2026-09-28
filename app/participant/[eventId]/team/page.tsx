@@ -7,7 +7,7 @@ import { HardCard } from "@/components/dashboard/HardCard";
 import { inputStyles } from "@/components/dashboard/form";
 
 // TODO: replace with a real fetch of teams for this event that still have space
-const MOCK_TEAMS = ["Team Popcorn", "Team Clapperboard", "Team Reel Deal", "Team Wide Shot"];
+const MOCK_TEAMS = ["Team 1", "Team 2", "Team 3", "Team 4"];
 
 export default function TeamPage() {
   const [currentTeam, setCurrentTeam] = useState<string | null>(null);

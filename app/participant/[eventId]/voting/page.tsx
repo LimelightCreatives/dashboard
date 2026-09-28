@@ -14,9 +14,9 @@ type Candidate = {
 
 // TODO: replace with a real fetch of submitted projects eligible for voting on this event
 const MOCK_CANDIDATES: Candidate[] = [
-  { id: "1", team: "Team Popcorn", title: "Last Light", logline: "A group of friends race the sunset to finish their film." },
-  { id: "2", team: "Team Clapperboard", title: "Retake", logline: "One actor keeps flubbing the same line — until it means something." },
-  { id: "3", team: "Team Reel Deal", title: "Static", logline: "A found-footage short about a haunted editing suite." },
+  { id: "1", team: "Team 1", title: "bleh bleh", logline: "Test film 1" },
+  { id: "2", team: "Team 2", title: "blah blah", logline: "Test film 2" },
+  { id: "3", team: "Team 3", title: "Dhurandhar: The Revenge (2026)", logline: "Jaskirat Singh Rangi descends deeper into his alias as Hamza Ali Mazari, rising through Karachi's criminal hierarchy to claim the feared title 'Sher-e-Baloch' while balancing loyalty, betrayal, and survival in a ruthless underworld." },
 ];
 
 export default function VotingPage() {
