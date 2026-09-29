@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { getEventConfig } from "@/lib/events";
 import { HardCard } from "@/components/dashboard/HardCard";
 import { Button } from "@/components/Button";
-import type { MilestoneStatus } from "@/lib/types";
+import type { MilestoneStatus } from "@/lib/events/types";
 
 const STATUS_LABEL: Record<MilestoneStatus, string> = {
   pending: "Ready to submit",

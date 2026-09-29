@@ -4,6 +4,7 @@ import Link from "next/link";
 
 type ButtonProps = {
   href?: string;
+  external?: boolean; // add this
   children: React.ReactNode;
   variant?: "primary" | "secondary";
   className?: string;
@@ -14,6 +15,7 @@ type ButtonProps = {
 
 export function Button({
   href,
+  external = false, // add this
   children,
   className = "",
   variant = "primary",
