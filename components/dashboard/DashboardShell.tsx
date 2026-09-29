@@ -44,8 +44,8 @@ export function DashboardShell({
   }, [pathname]);
 
   return (
-    <div className="flex flex-1 flex-col md:flex-row">
-      <aside className="border-b-[1px] border-[var(--border)] bg-[var(--background)] md:w-60 md:shrink-0 md:border-b-0 md:border-r-[1px]">
+    <div className="flex min-h-0 flex-1 flex-col overflow-hidden md:flex-row">
+      <aside className="shrink-0 border-b-[1px] border-[var(--border)] bg-[var(--background)] md:w-60 md:overflow-y-auto md:border-b-0 md:border-r-[1px]">
         {/* Padding leaves room for the hard shadows, which overflow-x-auto would otherwise clip */}
         <nav className="flex gap-4 overflow-x-auto px-6 pb-5 pt-4 md:flex-col md:gap-4 md:overflow-visible md:p-6 md:pt-8">
           {tabs.map((tab) => {
@@ -79,7 +79,7 @@ export function DashboardShell({
 
       <main
         aria-busy={!!pendingHref}
-        className="min-w-0 flex-1 px-6 py-10 md:px-16 md:py-14"
+        className="min-h-0 min-w-0 flex-1 overflow-y-auto px-6 py-10 md:px-16 md:py-14"
       >
         <div
           className={`transition-[filter,opacity] duration-200 ${

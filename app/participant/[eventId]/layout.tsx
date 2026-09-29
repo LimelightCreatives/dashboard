@@ -6,6 +6,8 @@ import {
   type DashboardTab,
 } from "@/components/dashboard/DashboardShell";
 import { EventThemeProvider } from "@/components/dashboard/EventThemeProvider";
+import { HardCard } from "@/components/dashboard/HardCard";
+import { Button } from "@/components/Button";
 
 const TABS: DashboardTab[] = [
   { label: "Milestones", href: "milestones", icon: "milestones" },
@@ -31,18 +33,35 @@ export default async function EventDashboardLayout({
 
   if (!event) {
     return (
-      <div className="p-10 font-body text-sm">
-        <p>
-          The event <strong>&quot;{eventId}&quot;</strong> is either not a
-          thing or has concluded.
-        </p>
+      <div className="flex min-h-dvh items-center justify-center px-6 py-16">
+        <div className="w-full max-w-md">
+          <HardCard className="flex flex-col items-start gap-5">
+            <h1 className="font-display text-3xl font-bold md:text-4xl">
+              This event doesn&apos;t exist . . . or does it?
+            </h1>
+
+            <p className="font-body text-sm text-[var(--foreground)]/70">
+              We couldn&apos;t find an event called{" "}
+              <strong className="break-all font-bold text-[var(--foreground)]">
+                &quot;{eventId}&quot;
+              </strong>
+              . It may have concluded, or the link might be wrong.
+            </p>
+
+            <Button href="/" variant="primary">
+              Go back home
+            </Button>
+          </HardCard>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <ClientTopbar user={user} label={event.name} />
+    <div className="flex h-dvh flex-col overflow-hidden">
+      <div className="shrink-0">
+        <ClientTopbar user={user} label={event.name} />
+      </div>
 
       <EventThemeProvider theme={event.theme}>
         <DashboardShell basePath={`/participant/${event.id}`} tabs={TABS}>
