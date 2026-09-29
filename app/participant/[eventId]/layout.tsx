@@ -10,7 +10,6 @@ import { EventThemeProvider } from "@/components/dashboard/EventThemeProvider";
 const TABS: DashboardTab[] = [
   { label: "Milestones", href: "milestones", icon: "milestones" },
   { label: "Project", href: "project", icon: "project" },
-  { label: "Voting", href: "voting", icon: "voting" },
   { label: "Team", href: "team", icon: "team" },
 ];
 

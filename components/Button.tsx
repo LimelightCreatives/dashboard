@@ -30,13 +30,21 @@ export function Button({
 
   const variants = {
     primary:
-      "border-[var(--foreground)] bg-[var(--ontik-accent)] text-[var(--background)] hover:bg-[var(--accent)] hover:text-[var(--foreground)] hover:shadow-[6px_6px_0_0_var(--foreground)]",
+      "border-[var(--foreground)] bg-[var(--ontik-accent)] text-[var(--background)] hover:bg-[var(--lime)] hover:text-[var(--foreground)] hover:shadow-[6px_6px_0_0_var(--foreground)]",
 
     secondary:
       "border-[var(--foreground)] bg-transparent text-[var(--foreground)] hover:bg-[var(--accent)] hover:text-[var(--foreground)] hover:shadow-[6px_6px_0_0_var(--foreground)]",
   };
 
   const styles = `${baseStyles} ${variants[variant]} ${className}`;
+
+  if (href && external) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" className={styles}>
+        {children}
+      </a>
+    );
+  }
 
   if (href) {
     return (

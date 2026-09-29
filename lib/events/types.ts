@@ -1,10 +1,14 @@
+export type MilestoneStatus = "pending" | "submitted" | "approved";
+
 export type Milestone = {
   id: string;
-  /** Display string, kept flexible since events show dates differently (e.g. "October 18" or "Oct 24–25"). */
-  date: string;
   label: string;
   description?: string;
-  completed?: boolean;
+  targetTime?: string; // e.g. "Day 1, after workshop 1"
+  evidence?: string;   // what the team needs to show
+  formUrl?: string;    // link to the submission form
+  bonus?: boolean;
+  status: MilestoneStatus;
 };
 
 export type EventTheme = {
