@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import { Footer } from "@/components/Footer";
+import { headers } from "next/headers";
+import { Topbar } from "@/components/dashboard/Topbar";
+import { logoutAction } from "@/app/actions/auth";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -48,14 +50,26 @@ export const metadata: Metadata = {
   title: "Dashboard - Limelight Creatives",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const h = await headers();
+  const user = {
+    name: h.get("x-user-name") || "User Unavailable",
+    email: h.get("x-user-email") || "unavailable",
+  };
+
+  async function logout() {
+    "use server";
+    await logoutAction();
+  }
+
   return (
     <html
       lang="en"
       className={`${wordmark.variable} ${display.variable} ${body.variable} min-h-screen font-body antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        {children}
+      <body className="flex h-dvh flex-col overflow-hidden">
+        <Topbar user={user} onLogout={logout} />
+        <div className="flex min-h-0 flex-1 flex-col">{children}</div>
       </body>
     </html>
   );

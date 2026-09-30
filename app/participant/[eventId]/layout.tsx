@@ -26,11 +26,6 @@ export default async function EventDashboardLayout({
   const eventId = resolvedParams.eventId ?? "";
   const event = getEventConfig(eventId);
 
-  const headersList = await headers();
-  const userName = headersList.get("x-user-name") || "User Unavailable";
-  const userEmail = headersList.get("x-user-email") || "unavailable";
-  const user = { name: userName, email: userEmail };
-
   if (!event) {
     return (
       <div className="flex min-h-dvh items-center justify-center px-6 py-16">
@@ -59,9 +54,6 @@ export default async function EventDashboardLayout({
 
   return (
     <div className="flex h-dvh flex-col overflow-hidden">
-      <div className="shrink-0">
-        <ClientTopbar user={user} label={event.name} />
-      </div>
 
       <EventThemeProvider theme={event.theme}>
         <DashboardShell basePath={`/participant/${event.id}`} tabs={TABS}>
