@@ -55,10 +55,6 @@ export default function CheckInPage() {
     <main className="min-h-0 flex-1 overflow-y-auto px-6 py-10">
       <div className="mx-auto max-w-2xl">
         <h1 className="font-display font-bold text-4xl md:text-5xl">Check-in</h1>
-        <p className="mt-2 max-w-xl font-body text-sm text-[var(--foreground)]/70">
-          Scan an attendee&apos;s QR code. The first scan checks them in, the next
-          checks them out, and so on. Every scan is logged to the sheet.
-        </p>
 
         <HardCard className="mt-8 !p-0 overflow-hidden">
           <div className="relative aspect-square w-full bg-black">

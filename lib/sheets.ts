@@ -2,13 +2,14 @@ import { google } from "googleapis";
 
 function privateKey(): string {
   const b64 = process.env.GOOGLE_PRIVATE_KEY_B64;
-  if (b64) return Buffer.from(b64, "base64").toString("utf8");
+  const raw = b64
+    ? Buffer.from(b64, "base64").toString("utf8")
+    : process.env.GOOGLE_PRIVATE_KEY ?? "";
 
-  // fallback: raw key, tolerating pasted quotes and literal "\n"
-  return (process.env.GOOGLE_PRIVATE_KEY ?? "")
+  return raw
     .trim()
-    .replace(/^["']|["']$/g, "")
-    .replace(/\\n/g, "\n");
+    .replace(/^["']|["']$/g, "") // stray surrounding quotes
+    .replace(/\\n/g, "\n"); // literal \n -> real newline
 }
 
 function client() {
