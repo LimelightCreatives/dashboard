@@ -5,6 +5,7 @@ import { getRows, appendRow } from "@/lib/sheets";
 const ATTENDEES_TAB = "Attendees"; // A: Participant Name, B: Phone No., C: Emergency No., D: Registration ID
 const CHECKINS_TAB = "Check-ins"; // A: Participant Name, B: Action, C: Timestamp, D: Registration ID
 const TIME_ZONE = "Australia/Sydney"; // servers usually run in UTC, so set the event's timezone here
+const ATTENDEE_CACHE_MS = 60_000; // newly added attendees can take up to this long to be recognised
 
 export type CheckInAction = "CHECK IN" | "CHECK OUT";
 
@@ -32,6 +33,21 @@ function stamp(date = new Date()) {
   return `${p.hour}:${p.minute}:${p.second} ${p.day}/${p.month}/${p.year}`;
 }
 
+// in-memory attendee cache (per server instance)
+let attendeeCache: { at: number; rows: string[][] } | null = null;
+
+async function getAttendees() {
+  if (attendeeCache && Date.now() - attendeeCache.at < ATTENDEE_CACHE_MS) {
+    return attendeeCache.rows;
+  }
+  const rows = await getRows(`'${ATTENDEES_TAB}'!A2:D`);
+  attendeeCache = { at: Date.now(), rows };
+  return rows;
+}
+
+// IDs currently being processed (per server instance)
+const inFlight = new Set<string>();
+
 export async function checkInAction(raw: string): Promise<CheckInResult> {
   // TODO: verify the caller is an organiser here. Server actions are public endpoints.
   const id = raw.trim();
@@ -40,10 +56,15 @@ export async function checkInAction(raw: string): Promise<CheckInResult> {
   }
   const key = id.toLowerCase();
 
+  if (inFlight.has(key)) {
+    return { status: "error", message: "Scan already processing." };
+  }
+  inFlight.add(key);
+
   try {
     const [attendees, log] = await Promise.all([
-      getRows(`${ATTENDEES_TAB}!A2:D`),
-      getRows(`${CHECKINS_TAB}!A2:D`),
+      getAttendees(),
+      getRows(`'${CHECKINS_TAB}'!A2:D`),
     ]);
 
     const person = attendees.find((r) => r[3]?.trim().toLowerCase() === key);
@@ -59,11 +80,13 @@ export async function checkInAction(raw: string): Promise<CheckInResult> {
     const action: CheckInAction = lastRow?.[1] === "CHECK IN" ? "CHECK OUT" : "CHECK IN";
 
     const at = stamp();
-    await appendRow(`${CHECKINS_TAB}!A:D`, [name, action, at, registrationId]);
+    await appendRow(`'${CHECKINS_TAB}'!A:D`, [name, action, at, registrationId]);
 
     return { status: "ok", action, id: registrationId, name, at };
   } catch (err) {
     console.error("check-in failed", err);
     return { status: "error", message: "Couldn't reach the sheet. Try again." };
+  } finally {
+    inFlight.delete(key);
   }
 }

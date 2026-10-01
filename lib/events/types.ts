@@ -21,6 +21,7 @@ export type EventConfig = {
   id: string;
   name: string;
   tagline?: string;
+  formUrl: string;
   theme: EventTheme;
   teamSize?: number;
   milestones: Milestone[];

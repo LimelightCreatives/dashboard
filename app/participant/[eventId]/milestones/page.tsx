@@ -39,10 +39,18 @@ export default function MilestonesPage() {
           const locked =
             !milestone.bonus && previous !== null && previous.status !== "approved";
 
-          const submitHref = milestone.formUrl
-            ? `${milestone.formUrl}${milestone.formUrl.includes("?") ? "&" : "?"}${new URLSearchParams(
-                { event: event.id, milestone: milestone.id },
-              ).toString()}`
+          function buildSubmitUrl(base: string, milestoneId: string, teamId: string) {
+            const url = new URL(base);
+            url.searchParams.set("milestone", milestoneId);
+            url.searchParams.set("team", teamId);
+            return url.toString();
+          }
+
+          const teamId = "test";
+
+          // inside the map:
+          const submitHref = teamId
+            ? buildSubmitUrl(event.formUrl, milestone.label, teamId)
             : null;
 
           return (
