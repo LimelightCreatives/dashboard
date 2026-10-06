@@ -20,6 +20,7 @@ export type EventTheme = {
 export type EventConfig = {
   id: string;
   name: string;
+  locked?: boolean;
   tagline?: string;
   formUrl: string;
   theme: EventTheme;

@@ -31,18 +31,24 @@ export default function CheckInPage() {
   const submit = useCallback(async (code: string) => {
     const now = Date.now();
     if (busy.current) return;
-    // the camera reads the same QR many times a second, so ignore repeats for 3s
     if (last.current.code === code && now - last.current.at < 3000) return;
     last.current = { code, at: now };
 
     busy.current = true;
     setPending(true);
+
+    // never let a stalled request lock the scanner
+    const timeout = new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error("timeout")), 8000)
+    );
+
     try {
-      const res = await checkInAction(code);
+      const res = await Promise.race([checkInAction(code), timeout]);
       setResult(res);
       setHistory((h) => [res, ...h].slice(0, 10));
     } catch {
       setResult({ status: "error", message: "Network error. Try again." });
+      last.current = { code: "", at: 0 }; // allow immediate retry of a failed scan
     } finally {
       busy.current = false;
       setPending(false);
@@ -66,7 +72,8 @@ export default function CheckInPage() {
               onError={() =>
                 setResult({ status: "error", message: "Camera unavailable. Check permissions." })
               }
-              paused={pending}
+              allowMultiple
+              scanDelay={1000}
               formats={["qr_code"]}
               constraints={{ facingMode: "environment" }}
               components={{ finder: false }}
@@ -82,6 +89,13 @@ export default function CheckInPage() {
                   pending ? "border-[var(--accent)]" : "border-white"
                 }`}
               />
+            </div>
+            <div
+              aria-live="polite"
+              className={`pointer-events-none absolute inset-0 flex items-center justify-center bg-black/60 transition-opacity duration-150 ${
+                pending ? "opacity-100" : "opacity-0"
+              }`}
+            >
             </div>
           </div>
         </HardCard>

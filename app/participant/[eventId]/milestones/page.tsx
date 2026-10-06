@@ -29,7 +29,7 @@ export default function MilestonesPage() {
     <div>
       <h1 className="font-display font-bold text-4xl md:text-5xl">Milestones</h1>
       <p className="mt-2 max-w-xl font-body text-sm text-[var(--foreground)]/70">
-        Submit each milestone for review. The next one unlocks once a mentor or
+        Submit each milestone for review. The next one unlocks once an
         organiser approves your current one.
       </p>
 
@@ -77,12 +77,6 @@ export default function MilestonesPage() {
                         </span>
                       ) : null}
                     </div>
-
-                    {milestone.targetTime ? (
-                      <p className="mt-2 font-body text-xs uppercase tracking-[0.08em] text-[var(--foreground)]/60">
-                        Target: {milestone.targetTime}
-                      </p>
-                    ) : null}
 
                     {milestone.description ? (
                       <p className="mt-3 font-body text-sm text-[var(--foreground)]/70">

@@ -3,7 +3,8 @@ import type { EventConfig } from "./types";
 export const genesisEvent: EventConfig = {
   id: "genesis",
   name: "Limelight GENESIS",
-  tagline: "A two-day film-a-thon",
+  tagline: "Pilot event",
+  locked: true,
   formUrl: "https://limelightcreatives.fillout.com/t/qyMeFhFzZuus",
   theme: {
     accent: "#01995C",

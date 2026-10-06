@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { getEventConfig } from "@/lib/events";
 import { ClientTopbar } from "@/components/dashboard/ClientTopbar";
+import { EventLockedDialog } from "@/components/dashboard/EventLockedDialog";
 import {
   DashboardShell,
   type DashboardTab,
@@ -54,11 +55,14 @@ export default async function EventDashboardLayout({
 
   return (
     <div className="flex h-dvh flex-col overflow-hidden">
-
       <EventThemeProvider theme={event.theme}>
-        <DashboardShell basePath={`/participant/${event.id}`} tabs={TABS}>
-          {children}
-        </DashboardShell>
+        {event.locked ? (
+          <EventLockedDialog eventName={event.name} />
+        ) : (
+          <DashboardShell basePath={`/participant/${event.id}`} tabs={TABS}>
+            {children}
+          </DashboardShell>
+        )}
       </EventThemeProvider>
     </div>
   );
