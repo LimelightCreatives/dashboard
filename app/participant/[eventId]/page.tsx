@@ -50,13 +50,11 @@ export default async function EventDashboardPage({
 
   return (
     <div>
-      <p className={LABEL}>{event.tagline}</p>
       <h1 className="mt-1 font-display text-4xl font-bold md:text-5xl">
-        {event.name}
+        Home
       </h1>
       <p className="mt-2 max-w-xl font-body text-sm text-[var(--foreground)]/70">
-        Your team&apos;s home base. Track your progress, see what&apos;s next,
-        and jump straight into a submission.
+        Take a look at your progress, and get started on your milestones here!
       </p>
 
       {/* Stats */}

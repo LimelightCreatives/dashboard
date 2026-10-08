@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Button } from "@/components/Button"; // adjust import path to wherever Button actually lives
+import { useState, useTransition } from "react";
+import { Button } from "@/components/Button";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -12,19 +12,20 @@ type TopbarUser = {
 };
 
 type TopbarProps = {
-  /** Left-hand label. Defaults to "Dashboard" so this stays generic across staff/participant views. */
   label?: string;
   user: TopbarUser;
-  onLogout: () => void;
+  onLogout: () => void | Promise<void>; // changed: allow the async server action
 };
 
-/**
- * Shared topbar for every dashboard (participant + staff, any event).
- * Deliberately uses only the generic theme tokens (--foreground/--background/--border/--surface),
- * never an event's accent colour, so it reads the same everywhere it's dropped in.
- */
 export function Topbar({ label = "Dashboard", user, onLogout }: TopbarProps) {
   const [open, setOpen] = useState(false);
+  const [isLoggingOut, startLogout] = useTransition();
+
+  const handleLogout = () => {
+    startLogout(async () => {
+      await onLogout();
+    });
+  };
 
   const initials = user.name
     .split(" ")
@@ -44,7 +45,6 @@ export function Topbar({ label = "Dashboard", user, onLogout }: TopbarProps) {
           priority
         />
       </Link>
-      {/* <span className="font-display text-lg tracking-tight">{label}</span> */}
 
       <div className="relative">
         <button
@@ -57,12 +57,11 @@ export function Topbar({ label = "Dashboard", user, onLogout }: TopbarProps) {
           <span className="flex h-8 w-8 items-center justify-center border-[2px] border-[var(--foreground)] bg-[var(--surface)] font-display text-xs">
             {initials || "?"}
           </span>
-          <span className="hidden sm:inline px-1">{user.name}</span>
+          <span className="hidden px-1 sm:inline">{user.name}</span>
         </button>
 
         {open ? (
           <>
-            {/* click-catcher to close the menu; swap for a proper useOnClickOutside hook later */}
             <button
               type="button"
               aria-label="Close menu"
@@ -76,11 +75,18 @@ export function Topbar({ label = "Dashboard", user, onLogout }: TopbarProps) {
               <div className="border-b border-[var(--border)] px-3 py-2">
                 <p className="font-body text-sm">{user.name}</p>
                 {user.email ? (
-                  <p className="font-body text-xs text-[var(--foreground)]/60">{user.email}</p>
+                  <p className="font-body text-xs text-[var(--foreground)]/60">
+                    {user.email}
+                  </p>
                 ) : null}
               </div>
               <div className="pt-2">
-                <Button variant="secondary" className="w-full" onClick={onLogout}>
+                <Button
+                  variant="secondary"
+                  className="w-full"
+                  onClick={handleLogout}
+                  disabled={isLoggingOut}
+                >
                   Log out
                 </Button>
               </div>
@@ -88,6 +94,20 @@ export function Topbar({ label = "Dashboard", user, onLogout }: TopbarProps) {
           </>
         ) : null}
       </div>
+
+      {isLoggingOut ? (
+        <div
+          role="status"
+          aria-live="polite"
+          aria-label="Logging out"
+          className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-4 bg-[color-mix(in_srgb,var(--background)_60%,transparent)] backdrop-blur-md"
+        >
+          <span
+            aria-hidden
+            className="h-10 w-10 animate-spin rounded-full border-2 border-[var(--foreground)]/20 border-t-[var(--accent)]"
+          />
+        </div>
+      ) : null}
     </header>
   );
 }

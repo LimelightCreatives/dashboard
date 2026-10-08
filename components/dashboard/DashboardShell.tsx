@@ -4,27 +4,33 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import {
+  Home,
   Milestone,
   FolderKanban,
-  Vote,
   Users,
   type LucideIcon,
 } from "lucide-react";
 
 const ICONS = {
+  home: Home,
   milestones: Milestone,
   project: FolderKanban,
-  voting: Vote,
   team: Users,
 } satisfies Record<string, LucideIcon>;
 
 export type DashboardTab = {
   label: string;
-  /** Path segment relative to the base path, e.g. "milestones" */
+  /**
+   * Path segment relative to the base path, e.g. "milestones".
+   * Use "" or "/" for the root tab (the base path itself).
+   */
   href: string;
   /** String key (not a component) so it can be passed from a server component */
   icon: keyof typeof ICONS;
 };
+
+/** Strip trailing slashes; "/" and "" both normalize to "". */
+const stripTrailingSlashes = (s: string) => s.replace(/\/+$/, "");
 
 export function DashboardShell({
   basePath,
@@ -43,15 +49,30 @@ export function DashboardShell({
     setPendingHref(null);
   }, [pathname]);
 
+  const base = stripTrailingSlashes(basePath);
+  // Normalized current path (handles trailingSlash: true in next.config)
+  const current = stripTrailingSlashes(pathname ?? "");
+
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden md:flex-row">
       <aside className="shrink-0 border-b-[1px] border-[var(--border)] bg-[var(--background)] md:w-60 md:overflow-y-auto md:border-b-0 md:border-r-[1px]">
         {/* Padding leaves room for the hard shadows, which overflow-x-auto would otherwise clip */}
         <nav className="flex gap-4 overflow-x-auto px-6 pb-5 pt-4 md:flex-col md:gap-4 md:overflow-visible md:p-6 md:pt-8">
           {tabs.map((tab) => {
-            const href = `${basePath}/${tab.href}`;
-            const active =
-              pathname === href || pathname?.startsWith(`${href}/`);
+            const segment = tab.href.replace(/^\/+|\/+$/g, "");
+            const isRoot = segment === "";
+
+            // Link target (never empty)
+            const href = isRoot ? base || "/" : `${base}/${segment}`;
+            // Comparable path (no trailing slash)
+            const target = isRoot ? base : `${base}/${segment}`;
+
+            // The root tab only matches exactly; otherwise it would be
+            // "active" on every child route too.
+            const active = isRoot
+              ? current === target
+              : current === target || current.startsWith(`${target}/`);
+
             const pending = pendingHref === href;
             const Icon = ICONS[tab.icon];
 
@@ -61,7 +82,7 @@ export function DashboardShell({
                 href={href}
                 aria-current={active ? "page" : undefined}
                 onClick={() => {
-                  if (href !== pathname) setPendingHref(href);
+                  if (!active) setPendingHref(href);
                 }}
                 className={`flex items-center gap-3 whitespace-nowrap border-[2px] px-4 py-3 font-display text-sm font-bold uppercase tracking-[0.1em] transition-all duration-150 ease-out ${
                   active

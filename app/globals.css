@@ -42,6 +42,7 @@
 :root {
   --background: #fffdf5;
   --foreground: #202c44;
+  --dots: #b2afa7;
 
   --surface: #f5f7ed;
   --surface-hover: #e8eee0;
@@ -65,6 +66,7 @@
 .dark {
   --background: #202c44;
   --foreground: #fffdf5;
+  --dots: #86847e;
 
   --surface: #26334d;
   --surface-hover: #30405e;
@@ -95,7 +97,7 @@ body {
 
   background-image: radial-gradient(
     circle at var(--d) var(--d),
-    var(--foreground) calc(var(--d) - 1px),
+    var(--dots) calc(var(--d) - 1px),
     transparent var(--d)
   );
 

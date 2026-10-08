@@ -11,6 +11,7 @@ import { HardCard } from "@/components/dashboard/HardCard";
 import { Button } from "@/components/Button";
 
 const TABS: DashboardTab[] = [
+  { label: "Home", href: "", icon: "home" },
   { label: "Milestones", href: "milestones", icon: "milestones" },
   { label: "Project", href: "project", icon: "project" },
   { label: "Team", href: "team", icon: "team" },
