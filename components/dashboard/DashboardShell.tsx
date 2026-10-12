@@ -8,6 +8,7 @@ import {
   Milestone,
   FolderKanban,
   Users,
+  Toolbox,
   type LucideIcon,
 } from "lucide-react";
 
@@ -15,6 +16,7 @@ const ICONS = {
   home: Home,
   milestones: Milestone,
   project: FolderKanban,
+  equipment: Toolbox,
   team: Users,
 } satisfies Record<string, LucideIcon>;
 

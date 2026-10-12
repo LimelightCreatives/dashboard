@@ -14,6 +14,7 @@ const TABS: DashboardTab[] = [
   { label: "Home", href: "", icon: "home" },
   { label: "Milestones", href: "milestones", icon: "milestones" },
   { label: "Project", href: "project", icon: "project" },
+  { label: "Equipment", href: "equipment", icon: "equipment" },
   { label: "Team", href: "team", icon: "team" },
 ];
 

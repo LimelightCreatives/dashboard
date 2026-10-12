@@ -4,7 +4,7 @@ export const genesisEvent: EventConfig = {
   id: "genesis",
   name: "Limelight GENESIS",
   tagline: "Pilot event",
-  locked: true,
+  locked: false,
   formUrl: "https://limelightcreatives.fillout.com/t/qyMeFhFzZuus",
   theme: {
     accent: "#01995C",
@@ -62,7 +62,7 @@ export const genesisEvent: EventConfig = {
       bonus: true,
       targetTime: "Any time throughout the weekend",
       description:
-        "Awarded for genuinely helping another team progress with their film. This could be helping with filming, acting, sound, editing, troubleshooting, or sharing a useful filmmaking skill.",
+        "Awarded for helping another team progress with their film. This could be helping with filming, acting, sound, editing, troubleshooting, or sharing a useful filmmaking skill.",
       evidence:
         "The other team confirms they received meaningful help, verified by a mentor or organiser",
       status: "pending",
