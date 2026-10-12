@@ -93,25 +93,6 @@ export default async function EventDashboardPage({
         </HardCard>
       </div>
 
-      {/* Segmented progress bar */}
-      <div className="mt-8" aria-label={`${approvedCount} of ${required.length} milestones approved`}>
-        <div className="flex gap-2">
-          {required.map((m) => (
-            <div
-              key={m.id}
-              title={`${m.label}: ${STATUS_LABEL[m.status]}`}
-              className={`h-4 flex-1 border-[2px] border-[var(--foreground)] ${
-                m.status === "approved"
-                  ? "bg-[var(--accent)]"
-                  : m.status === "submitted"
-                    ? "bg-[var(--accent)]/30"
-                    : "bg-transparent"
-              }`}
-            />
-          ))}
-        </div>
-      </div>
-
       {/* Up next */}
       <section className="mt-12">
         <h2 className="font-display text-2xl font-bold">

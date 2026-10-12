@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 
 import { getEventConfig } from "@/lib/events";
@@ -16,9 +17,74 @@ const STATUS_LABEL: Record<MilestoneStatus, string> = {
 const TAG =
   "inline-block border-[2px] border-[var(--foreground)] px-2 py-0.5 font-display text-[0.7rem] font-bold uppercase tracking-[0.08em]";
 
+function Spinner() {
+  return (
+    <div className="flex justify-center py-20" role="status" aria-label="Loading">
+      <span
+        aria-hidden
+        className="h-10 w-10 animate-spin rounded-full border-2 border-[var(--foreground)]/20 border-t-[var(--accent)]"
+      />
+    </div>
+  );
+}
+
+// URLSearchParams handles encoding, so team names with spaces or & are safe.
+function buildSubmitUrl(base: string, milestone: string, team: string) {
+  const url = new URL(base);
+  url.searchParams.set("milestone", milestone);
+  url.searchParams.set("team", team);
+  return url.toString();
+}
+
 export default function MilestonesPage() {
   const { eventId } = useParams<{ eventId: string }>();
   const event = getEventConfig(eventId)!;
+
+  // undefined = still checking, null = no team
+  const [team, setTeam] = useState<{ name: string } | null | undefined>(undefined);
+  const [teamError, setTeamError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/team");
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        if (!cancelled) setTeam(data?.team ?? null);
+      } catch {
+        if (!cancelled) setTeamError("Couldn't check your team. Refresh to try again.");
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Wait for the team lookup so the list never flashes before the join-a-team card.
+  if (team === undefined && !teamError) return <Spinner />;
+
+  if (team === null) {
+    return (
+      <div>
+        <h1 className="font-display font-bold text-4xl md:text-5xl">Milestones</h1>
+        <div className="mx-auto mt-10 w-full max-w-lg md:mt-16">
+          <HardCard>
+            <div className="flex flex-col items-center px-4 py-10 text-center md:py-14">
+              <p className="font-display text-3xl md:text-4xl">Join a team first</p>
+              <p className="mt-4 max-w-sm font-body text-base text-[var(--foreground)]/70">
+                Milestones are submitted per team. Join or create a team, then come back to
+                submit.
+              </p>
+              <Button className="mt-8" href="team">
+                Go to team page
+              </Button>
+            </div>
+          </HardCard>
+        </div>
+      </div>
+    );
+  }
 
   const ordered = [
     ...event.milestones.filter((m) => !m.bonus),
@@ -33,24 +99,27 @@ export default function MilestonesPage() {
         organiser approves your current one.
       </p>
 
+      {teamError ? (
+        <p
+          role="alert"
+          className="mt-6 border-[2px] border-red-600 px-3 py-2 font-body text-sm text-red-600"
+        >
+          {teamError}
+        </p>
+      ) : team ? (
+        <p className="mt-6 font-body text-sm text-[var(--foreground)]/70">
+          Submitting as <strong>{team.name}</strong>
+        </p>
+      ) : null}
+
       <ol className="mt-10 space-y-8">
         {ordered.map((milestone, index) => {
           const previous = index > 0 ? ordered[index - 1] : null;
           const locked =
             !milestone.bonus && previous !== null && previous.status !== "approved";
 
-          function buildSubmitUrl(base: string, milestoneId: string, teamId: string) {
-            const url = new URL(base);
-            url.searchParams.set("milestone", milestoneId);
-            url.searchParams.set("team", teamId);
-            return url.toString();
-          }
-
-          const teamId = "test";
-
-          // inside the map:
-          const submitHref = teamId
-            ? buildSubmitUrl(event.formUrl, milestone.label, teamId)
+          const submitHref = team
+            ? buildSubmitUrl(event.formUrl, milestone.label, team.name)
             : null;
 
           return (
@@ -112,10 +181,17 @@ export default function MilestonesPage() {
                     {locked ? "Locked" : STATUS_LABEL[milestone.status]}
                   </span>
 
-                  {!locked && milestone.status === "pending" && submitHref ? (
-                    <Button href={submitHref} external variant="primary">
-                      SUBMIT
-                    </Button>
+                  {!locked && milestone.status === "pending" ? (
+                    submitHref ? (
+                      <Button href={submitHref} external variant="primary">
+                        SUBMIT
+                      </Button>
+                    ) : (
+                      // Still checking the team, or there is no team.
+                      <Button variant="primary" disabled>
+                        SUBMIT
+                      </Button>
+                    )
                   ) : null}
                 </div>
               </HardCard>

@@ -70,12 +70,15 @@ export function Topbar({ label = "Dashboard", user, onLogout }: TopbarProps) {
             />
             <div
               role="menu"
-              className="absolute right-0 z-20 mt-2 w-56 border-[2px] border-[var(--foreground)] bg-[var(--background)] p-2 shadow-[4px_4px_0_0_var(--foreground)]"
+              className="absolute right-0 z-20 mt-2 w-max min-w-56 max-w-[min(20rem,calc(100vw-2rem))] border-[2px] border-[var(--foreground)] bg-[var(--background)] p-2 shadow-[4px_4px_0_0_var(--foreground)]"
             >
               <div className="border-b border-[var(--border)] px-3 py-2">
-                <p className="font-body text-sm">{user.name}</p>
+                <p className="break-words font-body text-sm">{user.name}</p>
                 {user.email ? (
-                  <p className="font-body text-xs text-[var(--foreground)]/60">
+                  <p
+                    title={user.email}
+                    className="break-all font-body text-xs text-[var(--foreground)]/60"
+                  >
                     {user.email}
                   </p>
                 ) : null}

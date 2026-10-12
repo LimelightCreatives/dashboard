@@ -85,12 +85,13 @@ export async function middleware(req: NextRequest) {
     return loginRedirect(req);
   }
 
-  const response = NextResponse.next();
-  response.headers.set("x-user-id", session.id ?? "");
-  response.headers.set("x-user-email", session.email ?? "");
-  response.headers.set("x-user-name", session.name ?? "");
-  response.headers.set("x-user-role", session.role ?? "");
-  return response;
+  const requestHeaders = new Headers(req.headers);
+  requestHeaders.set("x-user-id", session.id ?? "");
+  requestHeaders.set("x-user-email", session.email ?? "");
+  requestHeaders.set("x-user-name", session.name ?? "");
+  requestHeaders.set("x-user-role", session.role ?? "");
+
+  return NextResponse.next({ request: { headers: requestHeaders } });
 }
 
 export const config = {

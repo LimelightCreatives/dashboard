@@ -1,5 +1,9 @@
 export const inputStyles =
-  "w-full border-[2px] border-[var(--border)] bg-[var(--surface)] px-4 py-2 font-body text-sm outline-none focus:border-[var(--foreground)]";
+  "w-full border-[2px] border-[var(--foreground)] bg-transparent px-4 py-2 font-body text-sm " +
+  "placeholder:text-[var(--foreground)]/40 transition-colors " +
+  "hover:bg-[var(--surface-hover)] focus:bg-[var(--surface)] " +
+  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)] " +
+  "disabled:cursor-not-allowed disabled:opacity-60";
 
 export function Field({
   label,
@@ -10,7 +14,7 @@ export function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-2 block font-body text-xs uppercase tracking-[0.15em] text-[var(--foreground)]/60">
+      <span className="mb-2 block font-display text-xs font-bold uppercase tracking-[0.08em] text-[var(--foreground)]">
         {label}
       </span>
       {children}
