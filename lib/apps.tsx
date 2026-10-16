@@ -5,7 +5,7 @@ export const participantApps: AppLink[] = [
 ];
 
 export const staffApps: AppLink[] = [
-  { name: "Theatre", href: "/staff/theatre", icon: "/apps/theatre.svg" },
+  { name: "Submissions", href: "/staff/theatre", icon: "/apps/theatre.svg" },
   { name: "Participants", href: "/staff/participants", icon: "/apps/profile.svg" },
   { name: "Check-in", href: "/staff/checkin", icon: "/apps/onboard.svg" },
   { name: "Milestones", href: "/staff/milestones", icon: "/apps/milestones.svg" },

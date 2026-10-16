@@ -17,6 +17,8 @@ const STATUS_LABEL: Record<MilestoneStatus, string> = {
 const TAG =
   "inline-block border-[2px] border-[var(--foreground)] px-2 py-0.5 font-display text-[0.7rem] font-bold uppercase tracking-[0.08em]";
 
+type Team = { id: string; name: string };
+
 function Spinner() {
   return (
     <div className="flex justify-center py-20" role="status" aria-label="Loading">
@@ -29,10 +31,17 @@ function Spinner() {
 }
 
 // URLSearchParams handles encoding, so team names with spaces or & are safe.
-function buildSubmitUrl(base: string, milestone: string, team: string) {
+// The IDs are what the webhook uses; the labels are just for humans reading Fillout.
+function buildSubmitUrl(
+  base: string,
+  milestone: { id: string; label: string },
+  team: Team
+) {
   const url = new URL(base);
-  url.searchParams.set("milestone", milestone);
-  url.searchParams.set("team", team);
+  url.searchParams.set("milestoneId", milestone.id);
+  url.searchParams.set("milestone", milestone.label);
+  url.searchParams.set("teamId", team.id);
+  url.searchParams.set("team", team.name);
   return url.toString();
 }
 
@@ -41,8 +50,12 @@ export default function MilestonesPage() {
   const event = getEventConfig(eventId)!;
 
   // undefined = still checking, null = no team
-  const [team, setTeam] = useState<{ name: string } | null | undefined>(undefined);
+  const [team, setTeam] = useState<Team | null | undefined>(undefined);
   const [teamError, setTeamError] = useState<string | null>(null);
+
+  // milestone id -> status. A missing key means "pending".
+  const [statuses, setStatuses] = useState<Record<string, MilestoneStatus>>({});
+  const [statusesLoaded, setStatusesLoaded] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -61,8 +74,35 @@ export default function MilestonesPage() {
     };
   }, []);
 
-  // Wait for the team lookup so the list never flashes before the join-a-team card.
-  if (team === undefined && !teamError) return <Spinner />;
+  useEffect(() => {
+    let cancelled = false;
+
+    const load = async () => {
+      try {
+        const res = await fetch("/api/milestones");
+        const data = res.ok ? await res.json() : { statuses: {} };
+        if (!cancelled) setStatuses(data.statuses ?? {});
+      } catch {
+        // Keep whatever we already had; the next focus will retry.
+      } finally {
+        if (!cancelled) setStatusesLoaded(true);
+      }
+    };
+
+    load();
+    // The form opens in a new tab, so refresh when the user comes back.
+    window.addEventListener("focus", load);
+    return () => {
+      cancelled = true;
+      window.removeEventListener("focus", load);
+    };
+  }, []);
+
+  const statusOf = (m: { id: string }): MilestoneStatus => statuses[m.id] ?? "pending";
+
+  // Wait for both lookups so the list never flashes the wrong lock state
+  // or the list before the join-a-team card.
+  if ((team === undefined || !statusesLoaded) && !teamError) return <Spinner />;
 
   if (team === null) {
     return (
@@ -115,12 +155,11 @@ export default function MilestonesPage() {
       <ol className="mt-10 space-y-8">
         {ordered.map((milestone, index) => {
           const previous = index > 0 ? ordered[index - 1] : null;
+          const status = statusOf(milestone);
           const locked =
-            !milestone.bonus && previous !== null && previous.status !== "approved";
+            !milestone.bonus && previous !== null && statusOf(previous) !== "approved";
 
-          const submitHref = team
-            ? buildSubmitUrl(event.formUrl, milestone.label, team.name)
-            : null;
+          const submitHref = team ? buildSubmitUrl(event.formUrl, milestone, team) : null;
 
           return (
             <li key={milestone.id}>
@@ -173,15 +212,15 @@ export default function MilestonesPage() {
                 <div className="flex shrink-0 flex-col items-end gap-3">
                   <span
                     className={`${TAG} ${
-                      milestone.status === "approved" && !locked
+                      status === "approved" && !locked
                         ? "bg-[var(--accent)] text-[var(--foreground)]"
                         : "bg-transparent text-[var(--foreground)]"
                     }`}
                   >
-                    {locked ? "Locked" : STATUS_LABEL[milestone.status]}
+                    {locked ? "Locked" : STATUS_LABEL[status]}
                   </span>
 
-                  {!locked && milestone.status === "pending" ? (
+                  {!locked && status === "pending" ? (
                     submitHref ? (
                       <Button href={submitHref} external variant="primary">
                         SUBMIT
