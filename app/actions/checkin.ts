@@ -2,10 +2,14 @@
 
 import { getRows, appendRow } from "@/lib/sheets";
 
-const ATTENDEES_TAB = "Attendees"; // A: Participant Name, B: Phone No., C: Emergency No., D: Registration ID
+const ATTENDEES_TAB = "Attendees"; // A: Name, B: Email, C: Phone No., D: Emergency No., E: Registration ID
 const CHECKINS_TAB = "Check-ins"; // A: Participant Name, B: Action, C: Timestamp, D: Registration ID
 const TIME_ZONE = "Australia/Sydney"; // servers usually run in UTC, so set the event's timezone here
 const ATTENDEE_CACHE_MS = 60_000; // newly added attendees can take up to this long to be recognised
+
+// column indexes in the Attendees tab
+const ATTENDEE_NAME_COL = 0;
+const ATTENDEE_ID_COL = 4;
 
 export type CheckInAction = "CHECK IN" | "CHECK OUT";
 
@@ -40,7 +44,7 @@ async function getAttendees() {
   if (attendeeCache && Date.now() - attendeeCache.at < ATTENDEE_CACHE_MS) {
     return attendeeCache.rows;
   }
-  const rows = await getRows(`'${ATTENDEES_TAB}'!A2:D`);
+  const rows = await getRows(`'${ATTENDEES_TAB}'!A2:E`);
   attendeeCache = { at: Date.now(), rows };
   return rows;
 }
@@ -67,13 +71,15 @@ export async function checkInAction(raw: string): Promise<CheckInResult> {
       getRows(`'${CHECKINS_TAB}'!A2:D`),
     ]);
 
-    const person = attendees.find((r) => r[3]?.trim().toLowerCase() === key);
+    const person = attendees.find(
+      (r) => r[ATTENDEE_ID_COL]?.trim().toLowerCase() === key,
+    );
     if (!person) {
       return { status: "unknown", id };
     }
 
-    const name = person[0] ?? "";
-    const registrationId = person[3].trim();
+    const name = person[ATTENDEE_NAME_COL] ?? "";
+    const registrationId = person[ATTENDEE_ID_COL].trim();
 
     // most recent log row for this person decides the next action
     const lastRow = [...log].reverse().find((r) => r[3]?.trim().toLowerCase() === key);
