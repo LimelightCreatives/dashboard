@@ -48,7 +48,7 @@ function AppTile({ app }: { app: AppLink }) {
 
 interface LaunchpadProps {
   apps: AppLink[];
-  header?: Record<string, string>; // Accept serialized header key-value pairs in client components
+  header: Record<string, string>; // Accept serialized header key-value pairs in client components
 }
 
 export default function Launchpad({ apps, header }: LaunchpadProps) {
@@ -66,6 +66,8 @@ export default function Launchpad({ apps, header }: LaunchpadProps) {
             <AppTile key={app.name} app={app} />
           ))}
         </div>
+
+        <p className="mt-12 text-center text-sm"></p>
       </div>
     </main>
   );
