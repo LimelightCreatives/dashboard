@@ -263,7 +263,7 @@ export default function RunOfShowPage() {
                     </>
                   ) : it.kind === "pblock" ? (
                     <p className="mt-2 font-display text-xl font-bold break-words">{it.text}</p>
-                  ) : (
+                  ) : it.kind === "block" ? (
                     <>
                       {it.a.roles.length === 0 && <p className="mt-2 font-display text-xl font-bold">Not assigned yet</p>}
                       {it.a.roles.map((r) => (
@@ -280,7 +280,7 @@ export default function RunOfShowPage() {
                       ))}
                       {it.a.note && <p className="mt-3 border-[2px] border-[var(--foreground)] px-3 py-2 font-body text-sm">{it.a.note}</p>}
                     </>
-                  )}
+                  ) : null}
                   {showLoc && <p className="mt-3 font-body text-sm font-bold">📍 {loc}</p>}
                   {it.kind === "block" && it.ctx.length > 0 && (
                     <div className="mt-3 border-t-[2px] border-[var(--foreground)]/20 pt-3 font-body text-sm text-[var(--foreground)]/70">
