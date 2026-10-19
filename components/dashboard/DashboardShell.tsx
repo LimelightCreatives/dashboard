@@ -9,6 +9,7 @@ import {
   FolderKanban,
   Users,
   Toolbox,
+  Tv,
   type LucideIcon,
 } from "lucide-react";
 
@@ -18,6 +19,7 @@ const ICONS = {
   project: FolderKanban,
   equipment: Toolbox,
   team: Users,
+  resources: Tv,
 } satisfies Record<string, LucideIcon>;
 
 export type DashboardTab = {

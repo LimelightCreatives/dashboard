@@ -16,6 +16,7 @@ const TABS: DashboardTab[] = [
   { label: "Project", href: "project", icon: "project" },
   { label: "Equipment", href: "equipment", icon: "equipment" },
   { label: "Team", href: "team", icon: "team" },
+  { label: "Resources", href: "resources", icon: "resources" },
 ];
 
 export default async function EventDashboardLayout({

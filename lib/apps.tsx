@@ -10,4 +10,5 @@ export const staffApps: AppLink[] = [
   { name: "Milestones", href: "/staff/milestones", icon: "/apps/milestones.svg" },
   { name: "Participants", href: "/staff/participants", icon: "/apps/profile.svg" },
   { name: "Submissions", href: "/staff/theatre", icon: "/apps/theatre.svg" },
+  { name: "Resources", href: "/staff/resources", icon: "/apps/resources.svg" },
 ];

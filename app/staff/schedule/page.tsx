@@ -259,7 +259,6 @@ export default function RunOfShowPage() {
                   ) : it.kind === "done" ? (
                     <>
                       <p className="mt-2 font-display text-xl font-bold">You’re done at {fmt(it.at)}. Thanks, {person?.name}.</p>
-                      <button type="button" onClick={p.toggleAll} className={`${BTN_OUTLINE} mt-4`}>{p.showAll ? "Hide my day" : "Show my day"}</button>
                     </>
                   ) : it.kind === "pblock" ? (
                     <p className="mt-2 font-display text-xl font-bold break-words">{it.text}</p>
