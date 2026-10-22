@@ -2,6 +2,7 @@ import type { AppLink } from "@/components/launchpad";
 
 export const participantApps: AppLink[] = [
   { name: "Limelight GENESIS", href: "/participant/genesis", icon: "/apps/genesis.svg" },
+  { name: "Schedule", href: "/participant/schedule", icon: "/apps/schedule.svg" },
 ];
 
 export const staffApps: AppLink[] = [

@@ -166,7 +166,7 @@ export default function ResourcesAdminPage() {
 
   return (
     <main className="min-h-0 flex-1 overflow-y-auto px-6 py-10">
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-6xl">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <h1 className="font-display font-bold text-4xl md:text-5xl">Resources</h1>
@@ -191,9 +191,8 @@ export default function ResourcesAdminPage() {
         ) : null}
 
         {draft ? (
-          <HardCard className="mt-8">
+          <HardCard className="mx-auto mt-8 max-w-3xl">
             <h2 className="font-display text-2xl font-bold">{draft.id ? "Edit resource" : "New resource"}</h2>
-
             <div className="mt-6 space-y-5">
               <Field label="Title">
                 <input value={draft.title} onChange={(e) => set("title", e.target.value)} className={FIELD} />
@@ -364,10 +363,10 @@ export default function ResourcesAdminPage() {
                 </p>
               </HardCard>
             ) : (
-              <ul className="mt-8 space-y-4">
+              <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {visible.map((r) => (
-                  <li key={r.id}>
-                    <HardCard className={busy ? "opacity-60" : ""}>
+                  <li key={r.id} className="min-w-0">
+                    <HardCard className={`flex h-full flex-col ${busy ? "opacity-60" : ""}`}>
                       <div className="flex flex-wrap items-start justify-between gap-3">
                         <div className="min-w-0">
                           <p className="font-display text-xl font-bold break-words">{r.title}</p>
@@ -384,7 +383,7 @@ export default function ResourcesAdminPage() {
                           {r.published ? "Published" : "Draft"}
                         </span>
                       </div>
-                      <div className="mt-4 flex flex-wrap gap-3">
+                      <div className="mt-auto flex flex-wrap gap-3 pt-4">
                         <button type="button" disabled={busy} onClick={() => edit(r)} className={BTN_SOLID}>
                           Edit
                         </button>

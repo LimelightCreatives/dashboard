@@ -168,7 +168,7 @@ export default function ResourcesPage() {
 
   return (
     <main className="min-h-0 flex-1 overflow-y-auto px-6 py-10">
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-6xl">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <h1 className="font-display font-bold text-4xl md:text-5xl">Resources</h1>
@@ -227,13 +227,13 @@ export default function ResourcesPage() {
             </p>
           </HardCard>
         ) : (
-          <ul className="mt-8 space-y-6">
+          <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {visible.map((r) => {
               const isOpen = open.has(r.id);
               const thumb = thumbnailFor(r);
               return (
-                <li key={r.id}>
-                  <HardCard>
+                <li key={r.id} className="min-w-0">
+                  <HardCard className="flex h-full flex-col">
                     <Thumb src={thumb} alt={`Thumbnail for ${r.title}`} href={r.url} kind={r.kind} />
                     <div className="flex flex-wrap items-start justify-between gap-4">
                       <div className="min-w-0">
@@ -253,7 +253,7 @@ export default function ResourcesPage() {
                     {isOpen && r.body.trim() ? <Body text={r.body} /> : null}
 
                     {r.body.trim() || r.url ? (
-                      <div className="mt-5 flex flex-wrap gap-3">
+                      <div className="mt-auto flex flex-wrap gap-3 pt-5">
                         {r.body.trim() ? (
                           <button
                             type="button"
