@@ -39,3 +39,31 @@ export async function appendRow(range: string, row: string[]) {
     requestBody: { values: [row] },
   });
 }
+
+/** Overwrite one row of cells, e.g. updateRow("'Attendees'!A5:E5", [...]). */
+export async function updateRow(range: string, row: string[]) {
+  await client().spreadsheets.values.update({
+    spreadsheetId: process.env.GOOGLE_SHEET_ID!,
+    range,
+    // RAW so formulas aren't run and phone numbers keep their leading zeros
+    valueInputOption: "RAW",
+    requestBody: { values: [row] },
+  });
+}
+
+/** Delete one row from a tab. `row` is the 1-indexed sheet row (the header is row 1). */
+export async function deleteRow(tab: string, row: number) {
+  const api = client();
+  const spreadsheetId = process.env.GOOGLE_SHEET_ID!;
+  const meta = await api.spreadsheets.get({ spreadsheetId, fields: "sheets.properties" });
+  const sheetId = meta.data.sheets?.find((x) => x.properties?.title === tab)?.properties?.sheetId;
+  if (sheetId == null) throw new Error(`Tab "${tab}" not found`);
+  await api.spreadsheets.batchUpdate({
+    spreadsheetId,
+    requestBody: {
+      requests: [
+        { deleteDimension: { range: { sheetId, dimension: "ROWS", startIndex: row - 1, endIndex: row } } },
+      ],
+    },
+  });
+}
