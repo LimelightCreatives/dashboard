@@ -18,7 +18,7 @@ const LABEL =
 
 type Block = Day["blocks"][number];
 type Entry =
-  | { kind: "marker"; key: string; s: number; text: string }
+  | { kind: "marker"; key: string; s: number; text: string | undefined }
   | { kind: "block"; key: string; s: number; e: number; text: string; where: string };
 
 const toMin = (t: string) => t.split(":").map(Number).reduce((h, m) => h * 60 + m);
