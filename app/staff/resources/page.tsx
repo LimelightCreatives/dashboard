@@ -191,148 +191,150 @@ export default function ResourcesAdminPage() {
         ) : null}
 
         {draft ? (
-          <HardCard className="mx-auto mt-8 max-w-3xl">
-            <h2 className="font-display text-2xl font-bold">{draft.id ? "Edit resource" : "New resource"}</h2>
-            <div className="mt-6 space-y-5">
-              <Field label="Title">
-                <input value={draft.title} onChange={(e) => set("title", e.target.value)} className={FIELD} />
-              </Field>
-
-              <Field label="Summary" hint="One line shown on the card.">
-                <input value={draft.summary} onChange={(e) => set("summary", e.target.value)} className={FIELD} />
-              </Field>
-
-              <div className="grid gap-5 sm:grid-cols-3">
-                <Field label="Type">
-                  <select
-                    value={draft.kind}
-                    onChange={(e) => set("kind", e.target.value as Kind)}
-                    className={FIELD}
-                  >
-                    <option value="guide">Guide</option>
-                    <option value="tutorial">Tutorial</option>
-                    <option value="video">Video</option>
-                    <option value="link">Link</option>
-                  </select>
+          <div className="mx-auto mt-8 max-w-3xl">
+            <HardCard>
+              <h2 className="font-display text-2xl font-bold">{draft.id ? "Edit resource" : "New resource"}</h2>
+              <div className="mt-6 space-y-5">
+                <Field label="Title">
+                  <input value={draft.title} onChange={(e) => set("title", e.target.value)} className={FIELD} />
                 </Field>
-                <Field label="Category">
-                  <input
-                    value={draft.category}
-                    onChange={(e) => set("category", e.target.value)}
-                    list="resource-categories"
-                    className={FIELD}
-                  />
-                  <datalist id="resource-categories">
-                    {categories.map((c) => (
-                      <option key={c} value={c} />
-                    ))}
-                  </datalist>
-                </Field>
-                <Field label="Visible to">
-                  <select
-                    value={draft.audience}
-                    onChange={(e) => set("audience", e.target.value as Audience)}
-                    className={FIELD}
-                  >
-                    {(Object.keys(AUDIENCE_LABEL) as Audience[]).map((a) => (
-                      <option key={a} value={a}>
-                        {AUDIENCE_LABEL[a]}
-                      </option>
-                    ))}
-                  </select>
-                </Field>
-              </div>
 
-              <Field label="Link" hint="Optional. Adds an Open or Watch button.">
-                <input
-                  value={draft.url}
-                  onChange={(e) => set("url", e.target.value)}
-                  placeholder="https://"
-                  inputMode="url"
-                  className={FIELD}
-                />
-              </Field>
+                <Field label="Summary" hint="One line shown on the card.">
+                  <input value={draft.summary} onChange={(e) => set("summary", e.target.value)} className={FIELD} />
+                </Field>
 
-              <Field
-                label="Thumbnail"
-                hint="Optional image link. YouTube links get one automatically. Without one, the card shows a plain placeholder."
-              >
-                <input
-                  value={draft.thumbnailUrl}
-                  onChange={(e) => set("thumbnailUrl", e.target.value)}
-                  placeholder="https://"
-                  inputMode="url"
-                  className={FIELD}
-                />
-              </Field>
-              {thumbnailFor({ kind: draft.kind, url: draft.url, thumbnailUrl: draft.thumbnailUrl }) ? (
-                <div className="max-w-xs border-[2px] border-[var(--foreground)]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={thumbnailFor({ kind: draft.kind, url: draft.url, thumbnailUrl: draft.thumbnailUrl })!}
-                    alt="Thumbnail preview"
-                    className="aspect-video w-full object-cover"
-                  />
+                <div className="grid gap-5 sm:grid-cols-3">
+                  <Field label="Type">
+                    <select
+                      value={draft.kind}
+                      onChange={(e) => set("kind", e.target.value as Kind)}
+                      className={FIELD}
+                    >
+                      <option value="guide">Guide</option>
+                      <option value="tutorial">Tutorial</option>
+                      <option value="video">Video</option>
+                      <option value="link">Link</option>
+                    </select>
+                  </Field>
+                  <Field label="Category">
+                    <input
+                      value={draft.category}
+                      onChange={(e) => set("category", e.target.value)}
+                      list="resource-categories"
+                      className={FIELD}
+                    />
+                    <datalist id="resource-categories">
+                      {categories.map((c) => (
+                        <option key={c} value={c} />
+                      ))}
+                    </datalist>
+                  </Field>
+                  <Field label="Visible to">
+                    <select
+                      value={draft.audience}
+                      onChange={(e) => set("audience", e.target.value as Audience)}
+                      className={FIELD}
+                    >
+                      {(Object.keys(AUDIENCE_LABEL) as Audience[]).map((a) => (
+                        <option key={a} value={a}>
+                          {AUDIENCE_LABEL[a]}
+                        </option>
+                      ))}
+                    </select>
+                  </Field>
                 </div>
-              ) : null}
 
-              <Field label="Content" hint="Leave a blank line between paragraphs. Lines that are only a web address become links.">
-                <textarea
-                  value={draft.body}
-                  onChange={(e) => set("body", e.target.value)}
-                  rows={12}
-                  className={`${FIELD} resize-y`}
-                />
-              </Field>
-
-              <div className="flex flex-wrap items-end gap-6">
-                <Field label="Order" hint="Lower numbers appear first in a category.">
+                <Field label="Link" hint="Optional. Adds an Open or Watch button.">
                   <input
-                    type="number"
-                    value={draft.sortOrder}
-                    onChange={(e) => set("sortOrder", Number(e.target.value))}
-                    className={`${FIELD} w-28`}
+                    value={draft.url}
+                    onChange={(e) => set("url", e.target.value)}
+                    placeholder="https://"
+                    inputMode="url"
+                    className={FIELD}
                   />
                 </Field>
-                <label className="flex cursor-pointer items-center gap-2 pb-2 font-body text-sm font-bold">
-                  <input
-                    type="checkbox"
-                    checked={draft.published}
-                    onChange={(e) => set("published", e.target.checked)}
-                    className="h-5 w-5 accent-[var(--accent)]"
-                  />
-                  Published
-                </label>
-              </div>
-            </div>
 
-            <div className="mt-8 flex flex-wrap gap-3">
-              <button
-                type="button"
-                disabled={busy}
-                onClick={() => run(() => saveResource(draft), () => setDraft(null))}
-                className={BTN_SOLID}
-              >
-                {busy ? "Saving…" : "Save changes"}
-              </button>
-              <button type="button" disabled={busy} onClick={() => setDraft(null)} className={BTN_OUTLINE}>
-                Cancel
-              </button>
-              {draft.id ? (
+                <Field
+                  label="Thumbnail"
+                  hint="Optional image link. YouTube links get one automatically. Without one, the card shows a plain placeholder."
+                >
+                  <input
+                    value={draft.thumbnailUrl}
+                    onChange={(e) => set("thumbnailUrl", e.target.value)}
+                    placeholder="https://"
+                    inputMode="url"
+                    className={FIELD}
+                  />
+                </Field>
+                {thumbnailFor({ kind: draft.kind, url: draft.url, thumbnailUrl: draft.thumbnailUrl }) ? (
+                  <div className="max-w-xs border-[2px] border-[var(--foreground)]">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={thumbnailFor({ kind: draft.kind, url: draft.url, thumbnailUrl: draft.thumbnailUrl })!}
+                      alt="Thumbnail preview"
+                      className="aspect-video w-full object-cover"
+                    />
+                  </div>
+                ) : null}
+
+                <Field label="Content" hint="Leave a blank line between paragraphs. Lines that are only a web address become links.">
+                  <textarea
+                    value={draft.body}
+                    onChange={(e) => set("body", e.target.value)}
+                    rows={12}
+                    className={`${FIELD} resize-y`}
+                  />
+                </Field>
+
+                <div className="flex flex-wrap items-end gap-6">
+                  <Field label="Order" hint="Lower numbers appear first in a category.">
+                    <input
+                      type="number"
+                      value={draft.sortOrder}
+                      onChange={(e) => set("sortOrder", Number(e.target.value))}
+                      className={`${FIELD} w-28`}
+                    />
+                  </Field>
+                  <label className="flex cursor-pointer items-center gap-2 pb-2 font-body text-sm font-bold">
+                    <input
+                      type="checkbox"
+                      checked={draft.published}
+                      onChange={(e) => set("published", e.target.checked)}
+                      className="h-5 w-5 accent-[var(--accent)]"
+                    />
+                    Published
+                  </label>
+                </div>
+              </div>
+
+              <div className="mt-8 flex flex-wrap gap-3">
                 <button
                   type="button"
                   disabled={busy}
-                  onClick={() => {
-                    if (!window.confirm(`Delete "${draft.title}"? This can't be undone.`)) return;
-                    run(() => deleteResource(draft.id!), () => setDraft(null));
-                  }}
-                  className={`${BTN_OUTLINE} ml-auto border-red-600 text-red-600`}
+                  onClick={() => run(() => saveResource(draft), () => setDraft(null))}
+                  className={BTN_SOLID}
                 >
-                  Delete
+                  {busy ? "Saving…" : "Save changes"}
                 </button>
-              ) : null}
-            </div>
-          </HardCard>
+                <button type="button" disabled={busy} onClick={() => setDraft(null)} className={BTN_OUTLINE}>
+                  Cancel
+                </button>
+                {draft.id ? (
+                  <button
+                    type="button"
+                    disabled={busy}
+                    onClick={() => {
+                      if (!window.confirm(`Delete "${draft.title}"? This can't be undone.`)) return;
+                      run(() => deleteResource(draft.id!), () => setDraft(null));
+                    }}
+                    className={`${BTN_OUTLINE} ml-auto border-red-600 text-red-600`}
+                  >
+                    Delete
+                  </button>
+                ) : null}
+              </div>
+            </HardCard>
+          </div>
         ) : (
           <>
             <div className="mt-8 flex flex-wrap items-center gap-3">
