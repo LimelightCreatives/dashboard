@@ -173,7 +173,7 @@ export default function ResourcesPage() {
           <div>
             <h1 className="font-display font-bold text-4xl md:text-5xl">Resources</h1>
             <p className="mt-2 font-body text-sm text-[var(--foreground)]/70">
-              Guides and tutorials to help you throughout the filming process.
+              Guides and tutorials to help you prepare for the shoot.
             </p>
           </div>
           <button type="button" onClick={load} disabled={refreshing} className={BTN_OUTLINE}>

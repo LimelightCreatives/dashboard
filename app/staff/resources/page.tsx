@@ -171,7 +171,7 @@ export default function ResourcesAdminPage() {
           <div>
             <h1 className="font-display font-bold text-4xl md:text-5xl">Resources</h1>
             <p className="mt-2 font-body text-sm text-[var(--foreground)]/70">
-              Write and publish the guides and tutorials clients see.
+              Write and publish the guides and tutorials participants see.
             </p>
           </div>
           {!draft ? (

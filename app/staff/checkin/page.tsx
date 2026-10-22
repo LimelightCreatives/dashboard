@@ -92,10 +92,13 @@ export default function CheckInPage() {
             </div>
             <div
               aria-live="polite"
-              className={`pointer-events-none absolute inset-0 flex items-center justify-center bg-black/60 transition-opacity duration-150 ${
+              className={`pointer-events-none absolute inset-0 flex items-center justify-center bg-black/80 transition-opacity duration-150 ${
                 pending ? "opacity-100" : "opacity-0"
               }`}
             >
+              <span
+                className="h-10 w-10 animate-spin rounded-full border-2 border-[var(--foreground)]/20 border-t-[var(--accent)]"
+              />
             </div>
           </div>
         </HardCard>

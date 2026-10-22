@@ -175,7 +175,8 @@ export default function RunOfShowPage() {
     const lead = data.event.leadId;
     const ordered = [
       ...api.scheduled.filter((s) => s.id === lead),
-      ...api.scheduled.filter((s) => s.id !== lead).sort((a, b) => a.name.localeCompare(b.name)),
+      ...api.scheduled.filter((s) => s.id !== lead && s.id !== "mentors").sort((a, b) => a.name.localeCompare(b.name)),
+      ...api.scheduled.filter((s) => s.id === "mentors"),
       ...api.staffList.filter((s) => s.placeholder),
     ];
     return (
@@ -204,8 +205,15 @@ export default function RunOfShowPage() {
         <h2 className="font-display text-2xl font-bold">
           {p.id === PARTICIPANT ? `Your ${p.day.label}` : `${person?.name}’s ${p.day.label}`}
         </h2>
+        {person?.note && <p className="mt-1 font-body text-sm text-[var(--foreground)]/70">{person.note}</p>}
         {person && data.event.redirectNote && person.id !== data.event.leadId && (
           <p className="mt-1 font-body text-sm text-[var(--foreground)]/70">{data.event.redirectNote}</p>
+        )}
+        {p.id !== PARTICIPANT && api.isAbsent(p.day, p.id) && (
+          <HardCard className="mt-6">
+            <p className="font-display text-xl font-bold">Not on site</p>
+            <p className="mt-1 font-body text-sm">You’re not scheduled for {p.day.label}.</p>
+          </HardCard>
         )}
         <ul className="mt-6 space-y-4">
           {plan.map((it, i) => {
@@ -261,7 +269,10 @@ export default function RunOfShowPage() {
                       <p className="mt-2 font-display text-xl font-bold">You’re done at {fmt(it.at)}. Thanks, {person?.name}.</p>
                     </>
                   ) : it.kind === "pblock" ? (
-                    <p className="mt-2 font-display text-xl font-bold break-words">{it.text}</p>
+                    <>
+                      <p className="mt-2 font-display text-xl font-bold break-words">{it.text}</p>
+                      {it.note && <p className="mt-3 border-[2px] border-[var(--foreground)] px-3 py-2 font-body text-sm">{it.note}</p>}
+                    </>
                   ) : it.kind === "block" ? (
                     <>
                       {it.a.roles.length === 0 && <p className="mt-2 font-display text-xl font-bold">Not assigned yet</p>}

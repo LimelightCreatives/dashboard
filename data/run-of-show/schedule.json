@@ -21,7 +21,7 @@
 
   "staff": [
     {"id": "ontik", "name": "Ontik", "availability": {"sat": ["07:30", "19:00"], "sun": ["08:00", "19:00"]}},
-    {"id": "arda", "name": "Arda", "availability": {"sat": ["07:30", "19:00"], "sun": ["08:00", "19:00"]}},
+    {"id": "arda", "name": "Arda", "availability": {"sat": false, "sun": ["08:00", "19:00"]}},
     {"id": "dev", "name": "Dev", "availability": {"sat": ["07:30", "19:00"], "sun": ["08:00", "19:00"]}},
     {"id": "hayley", "name": "Hayley", "availability": {"sat": ["07:30", "19:00"], "sun": ["08:00", "19:00"]}},
     {"id": "joshua", "name": "Joshua", "availability": {"sat": [["07:30", "09:30"], ["11:30", "19:00"]], "sun": ["08:00", "19:00"]}},
@@ -31,7 +31,7 @@
     {"id": "riham", "name": "Riham", "availability": {"sat": ["07:30", "19:00"], "sun": ["08:00", "19:00"]}},
     {"id": "theo", "name": "Theo", "availability": {"sat": ["07:30", "19:00"], "sun": ["08:00", "19:00"]}},
     {"id": "amisha", "name": "Amisha", "availability": {"sat": ["07:30", "17:00"], "sun": ["08:00", "19:00"]}},
-    {"id": "mentors", "name": "Extra mentors (TBC)", "placeholder": "Assignments coming soon"}
+    {"id": "mentors", "name": "Mentor", "note": "This is your base plan. Move to wherever participants are unsupervised.", "availability": {"sat": ["08:30", "18:30"], "sun": ["08:30", "18:30"]}}
   ],
 
   "roles": {
@@ -51,7 +51,11 @@
     "La Trobe Setup": {
       "location": "LT",
       "steps": [
-        "Set up La Trobe rooms and the Station before participants arrive"
+        "Move boxes to the organiser room",
+        "Set up the Station: a long table with milestone prizes and rental equipment",
+        "Put no-entry signs on restricted rooms (games room, organiser room)",
+        "Test the AV in the lecture theatre",
+        "Put the participant dashboard QR code up in the 2 main rooms"
       ]
     },
     "Golden Age Setup": {
@@ -70,8 +74,10 @@
     "Check-In": {
       "location": "GA-front",
       "steps": [
-        "Check participants in as they arrive",
-        "Direct them to breakfast"
+        "Scan each participant’s QR code",
+        "Not on the list: move them aside and have them sign the waiver. Call their parents if needed",
+        "If it’s busy, send them inside and sort them out later",
+        "Looks like an adult? They’re probably a mentor, so send them to Ontik"
       ]
     },
     "Icebreakers": {
@@ -182,11 +188,6 @@
       "flexible": true,
       "steps": [
         "Help participants and keep the room settled"
-      ]
-    },
-    "Filming": {
-      "steps": [
-        "Film the event for marketing and reporting"
       ]
     },
     "Station": {
@@ -322,6 +323,14 @@
       "steps": [
         "Venue pack-up"
       ]
+    },
+    "Supervision": {
+      "flexible": true,
+      "steps": [
+        "Roam your venue and look for any area with participants but no staff (rooms, corridors, the Park)",
+        "Stay and supervise that area until a staff member takes over or participants leave",
+        "If you see a problem you can’t handle, find Ontik"
+      ]
     }
   },
 
@@ -335,7 +344,6 @@
           "start": "07:30", "end": "08:00", "location": "LT", "title": "Staff briefing + drop off big items",
           "staff": {
             "ontik": "Briefing",
-            "arda": "Briefing",
             "dev": "Briefing",
             "hayley": "Briefing",
             "joshua": "Briefing",
@@ -351,12 +359,11 @@
           "start": "08:00", "end": "08:30", "location": "LT → GA", "title": "Walk to Golden Age + La Trobe setup",
           "staff": {
             "ontik": "Walk to Golden Age",
-            "arda": "Walk to Golden Age",
             "dev": "Walk to Golden Age",
             "hayley": "Walk to Golden Age",
-            "joshua": "Walk to Golden Age",
+            "joshua": "La Trobe Setup",
             "justin": "Walk to Golden Age",
-            "meher": "La Trobe Setup",
+            "meher": "Walk to Golden Age",
             "olivia": "La Trobe Setup",
             "riham": "Walk to Golden Age",
             "theo": "La Trobe Setup",
@@ -364,102 +371,101 @@
           }
         },
         {
-          "start": "08:30", "end": "09:00", "location": "GA", "participants": "Doors open: check-in, breakfast, icebreakers",
+          "start": "08:30", "end": "09:00", "location": "GA", "participants": "Doors open: check-in, breakfast, icebreakers", "participantNote": "A videographer is filming the event.",
           "staff": {
-            "ontik": "Icebreakers",
-            "arda": "Check-In",
+            "ontik": "Golden Age Setup",
             "dev": "Check-In",
-            "hayley": "Check-In",
-            "joshua": "Golden Age Setup",
+            "hayley": "Icebreakers",
+            "joshua": "La Trobe Setup",
             "justin": "Check-In",
-            "meher": "La Trobe Setup",
+            "meher": "Check-In",
             "olivia": "La Trobe Setup",
-            "riham": ["Filming", "Golden Age Setup"],
+            "riham": "Golden Age Setup",
             "theo": "La Trobe Setup",
-            "amisha": "Golden Age Setup"
+            "amisha": "Check-In",
+            "mentors": {"role": "Supervision", "location": "GA", "note": "Meet staff at Golden Age at 8:30; help during check-in, breakfast and opening"}
           }
         },
         {
           "start": "09:00", "end": "09:30", "location": "GA", "participants": "Opening ceremony",
           "staff": {
             "ontik": "Speaking",
-            "arda": "Golden Age Support",
             "dev": "Golden Age Support",
             "hayley": "Golden Age Support",
-            "joshua": "Golden Age Support",
+            "joshua": "La Trobe Setup",
             "justin": "Golden Age Support",
-            "meher": "La Trobe Setup",
+            "meher": "Golden Age Support",
             "olivia": "La Trobe Setup",
-            "riham": "Filming",
+            "riham": "Golden Age Support",
             "theo": "La Trobe Setup",
-            "amisha": "Golden Age Support"
+            "amisha": "Golden Age Support",
+            "mentors": {"role": "Supervision", "location": "GA", "note": "Meet staff at Golden Age at 8:30; help during check-in, breakfast and opening"}
           }
         },
         {
           "start": "09:30", "end": "09:45", "location": "GA → LT", "participants": "Walk to La Trobe in 5 groups",
           "staff": {
             "ontik": "Sort Teams + Walk Group 5",
-            "arda": "Walk Group 2",
             "dev": "Walk Group 3",
             "hayley": "Walk Group 4",
             "justin": "Walk Group 1",
-            "meher": "La Trobe Receiving",
+            "meher": "Walk Group 2",
             "olivia": "La Trobe Receiving",
             "riham": "Golden Age Pack-Up",
             "theo": "La Trobe Receiving",
-            "amisha": "Golden Age Pack-Up"
+            "amisha": "Golden Age Pack-Up",
+            "mentors": {"role": "Supervision", "location": "GA → LT", "note": "Walk with the groups"}
           }
         },
         {
           "start": "09:45", "end": "10:15", "location": "LT", "participants": "Settle in, choose seats",
           "staff": {
             "ontik": "Event Lead",
-            "arda": "Working Space",
             "dev": "Quiet Room",
             "hayley": "Filmmaking Rooms",
             "justin": "Reception Duty",
-            "meher": "La Trobe Receiving",
+            "meher": "Working Space",
             "olivia": "La Trobe Receiving",
             "riham": "Workshop Prep",
             "theo": "La Trobe Receiving",
-            "amisha": "Workshop Floor Support"
+            "amisha": "Workshop Floor Support",
+            "mentors": {"role": "Supervision", "location": "LT / Park"}
           }
         },
         {
           "start": "10:15", "end": "11:15", "location": "LT", "participants": "Storyboarding workshop (compulsory) · includes La Trobe venue info and Helen’s safety talk",
           "staff": {
-            "ontik": "Filming",
-            "arda": "Reception Duty",
+            "ontik": "Event Lead",
             "dev": "Station",
             "hayley": "Workshop Floor Support",
             "justin": "Station",
             "meher": "Station",
             "olivia": "Workshop Support",
             "riham": "Workshop Lead",
-            "theo": "Workshop Floor Support",
-            "amisha": "Workshop Support"
+            "theo": "Reception Duty",
+            "amisha": "Workshop Support",
+            "mentors": {"role": "Supervision", "location": "LT / Park"}
           }
         },
         {
           "start": "11:15", "end": "11:45", "location": "LT", "participants": "Working session",
           "staff": {
-            "ontik": "Filming",
-            "arda": "Working Space",
+            "ontik": "Event Lead",
             "dev": "Station",
             "hayley": "Reception Duty",
             "justin": "Station",
             "meher": "Station",
             "olivia": "Quiet Room",
             "riham": "Workshop Prep",
-            "theo": "Quiet Room",
-            "amisha": "Filmmaking Rooms"
+            "theo": "Working Space",
+            "amisha": "Filmmaking Rooms",
+            "mentors": {"role": "Supervision", "location": "LT / Park"}
           }
         },
         {
           "start": "11:45", "end": "12:45", "location": "LT", "participants": "Filming workshop (optional)",
           "staff": {
-            "ontik": "Filming",
-            "arda": "Quiet Room",
+            "ontik": "Event Lead",
             "dev": "Working Space",
             "hayley": "Workshop Support",
             "joshua": "Station",
@@ -468,133 +474,134 @@
             "olivia": "Workshop Support",
             "riham": "Workshop Lead",
             "theo": "Station",
-            "amisha": "Filmmaking Rooms"
+            "amisha": "Filmmaking Rooms",
+            "mentors": {"role": "Supervision", "location": "LT / Park"}
           }
         },
         {
           "start": "12:45", "end": "13:45", "location": "Park / LT", "participants": "Off-site filming", "participantLocation": "Park", "staffLocation": "LT",
           "staff": {
             "ontik": "Park + Event Lead",
-            "arda": "Catering Lead",
             "dev": "Park",
             "hayley": "Park",
             "joshua": "Park",
             "justin": "Station",
-            "meher": "Station",
+            "meher": "Catering Lead",
             "olivia": "Station",
-            "riham": {"role": "Filming", "location": "Park / LT"},
+            "riham": "Station",
             "theo": "Park",
-            "amisha": "Reception Duty"
+            "amisha": "Reception Duty",
+            "mentors": {"role": "Supervision", "location": "LT / Park"}
           }
         },
         {
           "start": "13:45", "end": "14:15", "location": "Park / LT", "participants": "Off-site filming", "participantLocation": "Park", "staffLocation": "LT",
           "staff": {
             "ontik": "Park + Event Lead",
-            "arda": "Catering Lead",
             "dev": "Park",
             "hayley": "Park",
             "joshua": "Park",
             "justin": "Station",
-            "meher": "Station",
+            "meher": "Catering Lead",
             "olivia": "Reception Duty",
-            "riham": {"role": "Filming", "location": "Park / LT"},
+            "riham": "Station",
             "theo": "Park",
-            "amisha": "Catering Setup"
+            "amisha": "Catering Setup",
+            "mentors": {"role": "Supervision", "location": "LT / Park"}
           }
         },
         {
           "start": "14:15", "end": "15:15", "location": "LT", "participants": "Lunch",
           "staff": {
             "ontik": "Catering",
-            "arda": "Catering Lead",
             "dev": "Catering",
             "hayley": "Catering",
             "joshua": "Reception Duty",
             "justin": "Station",
-            "meher": "Station",
+            "meher": "Catering Lead",
             "olivia": "Station",
-            "riham": "Filming",
+            "riham": "Station",
             "theo": "Catering",
-            "amisha": "Catering"
+            "amisha": "Catering",
+            "mentors": {"role": "Supervision", "location": "LT / Park"}
           }
         },
         {
           "start": "15:15", "end": "15:45", "location": "Park / LT", "participants": "Off-site filming", "participantLocation": "Park", "staffLocation": "LT",
           "staff": {
             "ontik": "Park + Event Lead",
-            "arda": "Lunch Pack-Up",
             "dev": "Park",
             "hayley": "Park",
             "joshua": "Park",
             "justin": "Station",
-            "meher": "Station",
+            "meher": "Lunch Pack-Up",
             "olivia": "Reception Duty",
-            "riham": {"role": "Filming", "location": "Park / LT"},
+            "riham": "Station",
             "theo": "Park",
-            "amisha": "Lunch Pack-Up"
+            "amisha": "Lunch Pack-Up",
+            "mentors": {"role": "Supervision", "location": "LT / Park"}
           }
         },
         {
           "start": "15:45", "end": "16:45", "location": "Park / LT", "participants": "Off-site filming", "participantLocation": "Park", "staffLocation": "LT",
           "staff": {
             "ontik": "Park + Event Lead",
-            "arda": "Quiet Room",
             "dev": "Park",
             "hayley": "Park",
             "joshua": "Park",
             "justin": "Reception Duty",
             "meher": "Station",
             "olivia": "Station",
-            "riham": {"role": "Filming", "location": "Park / LT"},
+            "riham": "Quiet Room",
             "theo": "Park",
-            "amisha": "Station"
+            "amisha": "Station",
+            "mentors": {"role": "Supervision", "location": "LT / Park"}
           }
         },
         {
           "start": "16:45", "end": "17:15", "location": "LT", "participants": "Karaoke & Activities",
           "staff": {
             "ontik": "Karaoke Host",
-            "arda": "Station",
             "dev": "Station",
             "hayley": "Karaoke & Activities Support",
             "joshua": "Karaoke Host",
             "justin": "Station",
-            "meher": "Quiet Room",
+            "meher": "Station",
             "olivia": "Working Space",
-            "riham": "Filming",
+            "riham": "Quiet Room",
             "theo": "Reception Duty",
-            "amisha": "Karaoke & Activities Support"
+            "amisha": "Karaoke & Activities Support",
+            "mentors": {"role": "Supervision", "location": "LT / Park"}
           }
         },
         {
           "start": "17:15", "end": "18:15", "location": "LT", "participants": "Working session",
           "staff": {
             "ontik": "Event Lead",
-            "arda": "Station",
             "dev": "Station",
             "hayley": "Filmmaking Rooms",
             "joshua": "Working Space",
             "justin": "Station",
-            "meher": "Quiet Room",
-            "olivia": "Reception Duty",
-            "riham": "Filming",
-            "theo": "Working Space"
+            "meher": "Station",
+            "olivia": "Working Space",
+            "riham": "Reception Duty",
+            "theo": "Quiet Room",
+            "mentors": {"role": "Supervision", "location": "LT / Park"}
           }
         },
         {
           "start": "18:15", "end": "18:30", "location": "LT", "participants": "Participant pack-up",
           "staff": {
             "ontik": "Pack-Up",
-            "arda": "Pack-Up",
             "dev": "Pack-Up",
             "hayley": "Pack-Up",
             "joshua": "Pack-Up",
             "justin": "Pack-Up",
             "meher": "Pack-Up",
             "olivia": "Pack-Up",
-            "riham": "Filming",
-            "theo": "Pack-Up"
+            "riham": "Pack-Up",
+            "theo": "Pack-Up",
+            "mentors": {"role": "Supervision", "location": "LT / Park"}
           }
         },
         {
@@ -604,7 +611,6 @@
           "start": "18:30", "end": "19:00", "location": "LT", "title": "Staff pack-up",
           "staff": {
             "ontik": "Pack-Up",
-            "arda": "Pack-Up",
             "dev": "Pack-Up",
             "hayley": "Pack-Up",
             "joshua": "Pack-Up",
@@ -639,7 +645,7 @@
           }
         },
         {
-          "start": "08:30", "end": "09:00", "location": "LT", "participants": "Doors open: check-in + breakfast",
+          "start": "08:30", "end": "09:00", "location": "LT", "participants": "Doors open: check-in + breakfast", "participantNote": "A videographer is filming the event.",
           "staff": {
             "ontik": "Event Lead",
             "arda": "Catering Lead",
@@ -649,9 +655,10 @@
             "justin": {"role": "Check-In", "location": "LT-front"},
             "meher": "Working Space",
             "olivia": "Catering",
-            "riham": "Filming",
+            "riham": "Catering",
             "theo": "Quiet Room",
-            "amisha": {"role": "Check-In", "location": "LT-front"}
+            "amisha": {"role": "Check-In", "location": "LT-front"},
+            "mentors": {"role": "Supervision", "location": "LT / Park"}
           }
         },
         {
@@ -665,9 +672,10 @@
             "justin": "Reception Duty",
             "meher": "Floor Support",
             "olivia": "Floor Support",
-            "riham": "Filming",
+            "riham": "Floor Support",
             "theo": "Floor Support",
-            "amisha": "Floor Support"
+            "amisha": "Floor Support",
+            "mentors": {"role": "Supervision", "location": "LT / Park"}
           }
         },
         {
@@ -681,9 +689,10 @@
             "justin": "Station",
             "meher": "Station",
             "olivia": "Working Space",
-            "riham": "Filming",
+            "riham": "Quiet Room",
             "theo": "Quiet Room",
-            "amisha": "Reception Duty"
+            "amisha": "Reception Duty",
+            "mentors": {"role": "Supervision", "location": "LT / Park"}
           }
         },
         {
@@ -697,9 +706,10 @@
             "justin": "Station",
             "meher": "Station",
             "olivia": "Reception Duty",
-            "riham": {"role": "Filming", "location": "Park / LT"},
+            "riham": "Park",
             "theo": "Park",
-            "amisha": "Station"
+            "amisha": "Station",
+            "mentors": {"role": "Supervision", "location": "LT / Park"}
           }
         },
         {
@@ -713,9 +723,10 @@
             "justin": "Station",
             "meher": "Reception Duty",
             "olivia": "Station",
-            "riham": {"role": "Filming", "location": "Park / LT"},
+            "riham": "Park",
             "theo": "Park",
-            "amisha": "Station"
+            "amisha": "Station",
+            "mentors": {"role": "Supervision", "location": "LT / Park"}
           }
         },
         {
@@ -729,9 +740,10 @@
             "justin": "Station",
             "meher": "Reception Duty",
             "olivia": "Station",
-            "riham": {"role": "Filming", "location": "Park / LT"},
+            "riham": "Park",
             "theo": "Park",
-            "amisha": "Station"
+            "amisha": "Station",
+            "mentors": {"role": "Supervision", "location": "LT / Park"}
           }
         },
         {
@@ -745,9 +757,10 @@
             "justin": "Reception Duty",
             "meher": "Station",
             "olivia": "Station",
-            "riham": "Filming",
+            "riham": "Park Return",
             "theo": "Park Return",
-            "amisha": "Station"
+            "amisha": "Station",
+            "mentors": {"role": "Supervision", "location": "LT / Park"}
           }
         },
         {
@@ -761,9 +774,10 @@
             "justin": "Reception Duty",
             "meher": "Station",
             "olivia": "Working Space",
-            "riham": "Filming",
+            "riham": "Workshop Support",
             "theo": "Quiet Room",
-            "amisha": "Station"
+            "amisha": "Station",
+            "mentors": {"role": "Supervision", "location": "LT / Park"}
           }
         },
         {
@@ -777,9 +791,10 @@
             "justin": "Station",
             "meher": "Station",
             "olivia": "Catering Setup",
-            "riham": "Filming",
+            "riham": "Workshop Support",
             "theo": "Quiet Room",
-            "amisha": "Catering Setup"
+            "amisha": "Catering Setup",
+            "mentors": {"role": "Supervision", "location": "LT / Park"}
           }
         },
         {
@@ -793,9 +808,10 @@
             "justin": "Station",
             "meher": "Station",
             "olivia": "Station",
-            "riham": "Filming",
+            "riham": "Catering",
             "theo": "Reception Duty",
-            "amisha": "Catering"
+            "amisha": "Catering",
+            "mentors": {"role": "Supervision", "location": "LT / Park"}
           }
         },
         {
@@ -809,9 +825,10 @@
             "justin": "Station",
             "meher": "Station",
             "olivia": "Reception Duty",
-            "riham": "Filming",
+            "riham": "Working Space",
             "theo": "Quiet Room",
-            "amisha": "Lunch Pack-Up"
+            "amisha": "Lunch Pack-Up",
+            "mentors": {"role": "Supervision", "location": "LT / Park"}
           }
         },
         {
@@ -819,15 +836,16 @@
           "staff": {
             "ontik": "Event Lead",
             "arda": "Working Space",
-            "dev": "Reception Duty",
+            "dev": "Working Space",
             "hayley": "Working Space",
             "joshua": "Filmmaking Rooms",
             "justin": "Station",
             "meher": "Station",
             "olivia": "Working Space",
-            "riham": "Filming",
+            "riham": "Reception Duty",
             "theo": "Quiet Room",
-            "amisha": "Station"
+            "amisha": "Station",
+            "mentors": {"role": "Supervision", "location": "LT / Park"}
           }
         },
         {
@@ -835,15 +853,16 @@
           "staff": {
             "ontik": "Event Lead",
             "arda": "Snacks Prep",
-            "dev": "Reception Duty",
+            "dev": "Working Space",
             "hayley": "Working Space",
             "joshua": "Filmmaking Rooms",
             "justin": "Station",
             "meher": "Station",
             "olivia": "Working Space",
-            "riham": "Filming",
+            "riham": "Reception Duty",
             "theo": "Quiet Room",
-            "amisha": "Station"
+            "amisha": "Station",
+            "mentors": {"role": "Supervision", "location": "LT / Park"}
           }
         },
         {
@@ -857,9 +876,10 @@
             "justin": "Floor Support",
             "meher": "Floor Support",
             "olivia": "Floor Support",
-            "riham": "Filming",
+            "riham": "Screening Setup",
             "theo": "Floor Support",
-            "amisha": "Floor Support"
+            "amisha": "Floor Support",
+            "mentors": {"role": "Supervision", "location": "LT / Park"}
           }
         },
         {
@@ -869,13 +889,14 @@
             "arda": "Snacks Setup",
             "dev": "Floor Support",
             "hayley": "Reception Duty",
-            "joshua": "Filming",
+            "joshua": "Floor Support",
             "justin": "Floor Support",
             "meher": "Floor Support",
             "olivia": "Floor Support",
-            "riham": {"role": "Judge", "note": "Third judge: Mentor (TBC)"},
-            "theo": {"role": "Judge", "note": "Third judge: Mentor (TBC)"},
-            "amisha": "Floor Support"
+            "riham": "Judge",
+            "theo": "Judge",
+            "amisha": "Floor Support",
+            "mentors": {"role": "Supervision", "location": "LT / Park"}
           }
         },
         {
@@ -885,13 +906,14 @@
             "arda": "Snacks",
             "dev": "Station",
             "hayley": "Floor Support",
-            "joshua": "Filming",
+            "joshua": "Floor Support",
             "justin": "Station",
             "meher": "Station",
             "olivia": "Snacks",
-            "riham": {"role": "Judge", "note": "Third judge: Mentor (TBC)"},
-            "theo": {"role": "Judge", "note": "Third judge: Mentor (TBC)"},
-            "amisha": "Reception Duty"
+            "riham": "Judge",
+            "theo": "Judge",
+            "amisha": "Reception Duty",
+            "mentors": {"role": "Supervision", "location": "LT / Park"}
           }
         },
         {
@@ -901,13 +923,14 @@
             "arda": "Floor Support",
             "dev": "Floor Support",
             "hayley": "Floor Support",
-            "joshua": "Filming",
+            "joshua": "Floor Support",
             "justin": "Floor Support",
             "meher": "Floor Support",
             "olivia": "Floor Support",
             "riham": "Floor Support",
             "theo": "Floor Support",
-            "amisha": "Reception Duty"
+            "amisha": "Reception Duty",
+            "mentors": {"role": "Supervision", "location": "LT / Park"}
           }
         },
         {

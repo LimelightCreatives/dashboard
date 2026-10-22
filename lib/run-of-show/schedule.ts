@@ -3,9 +3,10 @@
 export type Raw = string | string[] | { role?: string | string[]; roles?: string | string[]; location?: string; note?: string };
 export type Block = {
   start: string; end?: string; location?: string; participantLocation?: string; staffLocation?: string;
-  participants?: string; title?: string; staff?: Record<string, Raw>; allStaff?: Raw;
+  participants?: string; participantNote?: string; title?: string; staff?: Record<string, Raw>; allStaff?: Raw;
 };
-export type Staff = { id: string; name: string; placeholder?: string; availability?: Record<string, string[] | string[][]> };
+/** availability[day]: [start, end], [[start, end], …], or false = not on site that day. Missing/empty = all day. */
+export type Staff = { id: string; name: string; placeholder?: string; note?: string; availability?: Record<string, string[] | string[][] | false> };
 export type RoleDef = { steps?: string[]; location?: string; flexible?: boolean };
 export type Day = { id: string; label: string; date?: string; blocks: Block[] };
 export type Schedule = {
@@ -25,7 +26,7 @@ export type Assignment =
 export type Item =
   | { kind: "marker"; s: number; e?: undefined; text: string }
   | { kind: "block"; s: number; e: number; key: string; a: Extract<Assignment, { status: "ok" }>; ctx: { s: number; text: string }[] }
-  | { kind: "pblock"; s: number; e: number; text: string; where: string; code?: string }
+  | { kind: "pblock"; s: number; e: number; text: string; where: string; code?: string; note?: string }
   | { kind: "arrive" | "return"; s: number; e: number; at: number; first: Extract<Item, { kind: "block" }> }
   | { kind: "done"; s: number; e: number; at: number };
 
@@ -82,9 +83,10 @@ export function makeApi(data: Schedule) {
     if (typeof raw === "string" || Array.isArray(raw)) return { roles: toArr(raw) as string[] };
     return { roles: toArr(raw.role ?? raw.roles) as string[], location: raw.location, note: raw.note };
   };
-  /** When someone is on site that day, in minutes. null = all day. */
+  /** When someone is on site that day, in minutes. null = all day, [] = not on site at all (availability: false). */
   const windowsFor = (p: Staff, day: Day) => {
     const raw = p.availability?.[day.id];
+    if (raw === false) return [];
     if (!raw || !raw.length) return null;
     const spans = (typeof raw[0] === "string" ? [raw] : raw) as string[][];
     return spans.map(([a, b]) => ({ s: toMin(a), e: toMin(b) })).sort((x, y) => x.s - y.s);
@@ -151,11 +153,14 @@ export function makeApi(data: Schedule) {
       const s = toMin(b.start), where = place(b.participantLocation || b.location);
       if (isMarker(b)) { items.push({ kind: "marker", s, text: b.participants }); continue; }
       const e = toMin(b.end!), prev = items[items.length - 1];
-      if (prev?.kind === "pblock" && prev.e === s && prev.text === b.participants && prev.where === where) { prev.e = e; continue; }
-      items.push({ kind: "pblock", s, e, text: b.participants, where, code: b.participantLocation || b.location });
+      if (prev?.kind === "pblock" && prev.e === s && prev.text === b.participants && prev.where === where && prev.note === b.participantNote) { prev.e = e; continue; }
+      items.push({ kind: "pblock", s, e, text: b.participants, where, code: b.participantLocation || b.location, note: b.participantNote });
     }
     return items;
   }
+
+  /** True when the person is not on site at all that day (availability: false). */
+  const isAbsent = (day: Day, id: string) => { const p = findStaff(id); return !!p && windowsFor(p, day)?.length === 0; };
 
   const planFor = (day: Day, id: string) => (id === PARTICIPANT ? participantPlan(day) : personalPlan(day, findStaff(id)!));
   const roleNames = (a: { roles: Role[] }) => a.roles.map((r) => r.name).join(" + ");
@@ -206,5 +211,5 @@ export function makeApi(data: Schedule) {
     return { now, nextLine, walk };
   }
 
-  return { place, staffList, scheduled, findStaff, isMarker, assignment, planFor, roleNames, title, nowNext };
+  return { place, staffList, scheduled, findStaff, isMarker, isAbsent, assignment, planFor, roleNames, title, nowNext };
 }
