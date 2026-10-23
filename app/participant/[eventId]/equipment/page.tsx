@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 
 import { Button } from "@/components/Button";
 import { HardCard } from "@/components/dashboard/HardCard";
@@ -273,9 +274,21 @@ export default function EquipmentPage() {
               <HardCard>
                 <div className="flex flex-wrap items-start justify-between gap-6">
                   <div className="flex min-w-0 flex-1 items-start gap-4">
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center border-[2px] border-[var(--foreground)] font-display text-sm font-bold">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
+                    {category.image ? (
+                      <div className="relative h-20 w-20 shrink-0 border-[2px] border-[var(--foreground)] bg-[var(--surface-hover)] md:h-24 md:w-24">
+                        <Image
+                          src={category.image}
+                          alt=""
+                          fill
+                          sizes="(min-width: 768px) 96px, 80px"
+                          className="object-cover"
+                        />
+                      </div>
+                    ) : (
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center border-[2px] border-[var(--foreground)] font-display text-sm font-bold">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                    )}
                     <div className="min-w-0">
                       <p className="font-display text-xl font-bold break-words">
                         {category.label}

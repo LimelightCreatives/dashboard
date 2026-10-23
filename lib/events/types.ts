@@ -8,6 +8,7 @@ export type Milestone = {
   evidence?: string;   // what the team needs to show
   formUrl?: string;    // link to the submission form
   bonus?: boolean;
+  prize?: string;
   status: MilestoneStatus;
 };
 

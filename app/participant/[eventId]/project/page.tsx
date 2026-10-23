@@ -17,6 +17,9 @@ const EMPTY_PROJECT: Project = { title: "", logline: "", videoUrl: "" };
 const TAG =
   "inline-block border-[2px] border-[var(--foreground)] px-2 py-0.5 font-display text-[0.7rem] font-bold uppercase tracking-[0.08em]";
 
+const DRIVE_UPLOAD_URL =
+  "https://drive.google.com/drive/folders/1AQ2uSyC7Hx1pd7snZvLhLEv4CrRXbLPm";
+
 // Reads the body as text first so an empty or non-JSON response never throws,
 // then throws a readable Error for any non-2xx status.
 async function api<T = any>(path: string, init?: RequestInit): Promise<T> {
@@ -106,6 +109,56 @@ export default function ProjectPage() {
     }
   }
 
+  // True only while editing and the form differs from what's saved.
+  const saved = project ?? EMPTY_PROJECT;
+  const isDirty =
+    editing &&
+    (form.title !== saved.title ||
+      form.logline !== saved.logline ||
+      form.videoUrl !== saved.videoUrl);
+
+  useEffect(() => {
+    if (!isDirty) return;
+
+    // Tab close, refresh, or typing a new URL. Browsers show their own generic
+    // prompt here; custom text is ignored.
+    const onBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+
+    // In-app navigation (sidebar links, etc.). Next.js client-side routing
+    // doesn't fire beforeunload, so intercept link clicks in the capture phase.
+    const onClick = (e: MouseEvent) => {
+      if (e.defaultPrevented || e.button !== 0) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
+      const anchor = (e.target as HTMLElement | null)?.closest?.("a");
+      if (!anchor || !anchor.href) return;
+      if (anchor.target && anchor.target !== "_self") return;
+      if (anchor.hasAttribute("download")) return;
+
+      const url = new URL(anchor.href, window.location.href);
+      const samePage =
+        url.origin === window.location.origin &&
+        url.pathname === window.location.pathname &&
+        url.search === window.location.search;
+      if (samePage) return;
+
+      if (!window.confirm("You have unsaved changes. Leave this page without saving?")) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    };
+
+    window.addEventListener("beforeunload", onBeforeUnload);
+    document.addEventListener("click", onClick, true);
+    return () => {
+      window.removeEventListener("beforeunload", onBeforeUnload);
+      document.removeEventListener("click", onClick, true);
+    };
+  }, [isDirty]);
+
   if (loading) return <Spinner />;
 
   if (loadError) {
@@ -175,6 +228,25 @@ export default function ProjectPage() {
       </div>
 
       <div className="mt-10 max-w-2xl">
+        <div
+          role="note"
+          className="mb-6 flex flex-wrap items-center justify-between gap-4 border-[2px] border-[var(--foreground)] bg-[var(--accent)]/10 px-4 py-4"
+        >
+          <div className="min-w-0 flex-1">
+            <p className="font-display text-base font-bold uppercase tracking-[0.04em]">
+              Upload your files first
+            </p>
+            <p className="mt-1 font-body text-sm text-[var(--foreground)]/70">
+              Upload your film and any supporting files to our shared Google Drive folder, then
+              paste the video link below. Make sure the link is set to &quot;Anyone with the link
+              can view&quot;.
+            </p>
+          </div>
+          <Button href={DRIVE_UPLOAD_URL} external variant="primary">
+            Open Google Drive
+          </Button>
+        </div>
+
         {editing ? (
           <HardCard>
             <form onSubmit={handleSubmit} className="space-y-6">

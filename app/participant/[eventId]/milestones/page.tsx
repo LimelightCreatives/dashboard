@@ -201,6 +201,15 @@ export default function MilestonesPage() {
                       </div>
                     ) : null}
 
+                    {milestone.prize ? (
+                      <div className="mt-3 border-[2px] border-[var(--foreground)] bg-[var(--accent)] px-3 py-2 text-[var(--background)]">
+                        <p className="font-display text-[0.7rem] font-bold uppercase tracking-[0.08em]">
+                          Prize
+                        </p>
+                        <p className="mt-1 font-body text-sm">🏆 {milestone.prize}</p>
+                      </div>
+                    ) : null}
+
                     {locked && previous ? (
                       <div className="mt-4 border-[2px] border-dashed border-[var(--foreground)] px-3 py-2 font-body text-sm">
                         🔒 Unlocks after “{previous.label}” is approved.

@@ -15,6 +15,8 @@ export type Booking = {
 export type CategoryConfig = {
   label: string;
   description?: string;
+  /** Path under /public, e.g. "/equipment/gimbal.jpg". Optional; the page falls back to a number badge. */
+  image?: string;
   /** Sheet tables are named "<tablePrefix> Day <n>", e.g. "Gimbal Day 1". */
   tablePrefix: string;
   /** Units are named "<unitName> 1", "<unitName> 2", ... (one per Slot column). */
@@ -77,11 +79,12 @@ export const SLOT_MINUTES = 60;
 export const TIMEZONE_OFFSET = "+11:00";
 
 // To add equipment: add a key here AND add "<prefix> Day n" tables plus the two
-// config rows to the sheet.
+// config rows to the sheet. Drop the photo in /public/equipment/ to match `image`.
 export const EQUIPMENT: Record<string, CategoryConfig> = {
   gimbal: {
     label: "Osmo Mobile 8 (Phone Gimbal)",
     description: "Handheld stabilisers for smooth, moving shots.",
+    image: "/equipment/osmo.jpg",
     tablePrefix: "Gimbal",
     unitName: "Gimbal",
     quantityLabel: "Gimbal Quantity",
@@ -90,10 +93,20 @@ export const EQUIPMENT: Record<string, CategoryConfig> = {
   mic: {
     label: "DJI Mic Mini (Lapel Mics)",
     description: "Clip-on mics for clean and convenient audio.",
+    image: "/equipment/micmini.webp",
     tablePrefix: "Microphone",
     unitName: "Mic",
     quantityLabel: "Microphone Quantity",
     maxSessionsLabel: "Max Microphone Sessions",
+  },
+  tripod: {
+    label: "Tripods",
+    description: "Sturdy stands for steady, hands-free shots.",
+    image: "/equipment/tripod.avif",
+    tablePrefix: "Tripod",
+    unitName: "Tripod",
+    quantityLabel: "Tripod Quantity",
+    maxSessionsLabel: "Max Tripod Sessions",
   },
 };
 
