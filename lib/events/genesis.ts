@@ -4,7 +4,7 @@ export const genesisEvent: EventConfig = {
   id: "genesis",
   name: "Limelight GENESIS",
   tagline: "Pilot event",
-  locked: false,
+  locked: true,
   formUrl: "https://limelightcreatives.fillout.com/t/qyMeFhFzZuus",
   theme: {
     accent: "#01995C",
@@ -49,7 +49,7 @@ export const genesisEvent: EventConfig = {
       "Quality check. The team has applied a consistent visual look across the entire project.",
       evidence: "A playable export of the film",
       status: "pending",
-      prize: "TMBL Notebook (inbuilt calc, old money 🤑)"
+      prize: "TMBL Notebook (has a calc, old money)"
     },
     {
       id: "final-cut",
