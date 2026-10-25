@@ -511,23 +511,39 @@
           }
         },
         {
-          "start": "13:30", "end": "14:00", "location": "LT", "participants": "Working session",
+          "start": "13:30", "end": "14:00", "location": "LT", "participants": "Filming workshop (optional)",
           "staff": {
             "ontik": "Event Lead",
-            "dev": "Quiet Room",
-            "hayley": "Filmmaking Rooms",
-            "joshua": "Working Space",
+            "dev": "Working Space",
+            "hayley": "Workshop Support",
+            "joshua": "Station",
             "justin": "Station",
             "meher": "Catering Lead",
-            "olivia": "Station",
-            "riham": "Reception Duty",
-            "theo": "Station",
+            "olivia": "Workshop Support",
+            "riham": "Workshop Lead",
+            "theo": "Reception Duty",
+            "amisha": "Station",
+            "mentors": {"role": "Supervision", "location": "LT / Park"}
+          }
+        },
+        {
+          "start": "14:00", "end": "14:30", "location": "LT", "participants": "Filming workshop (optional)",
+          "staff": {
+            "ontik": "Event Lead",
+            "dev": "Working Space",
+            "hayley": "Workshop Support",
+            "joshua": "Station",
+            "justin": "Station",
+            "meher": "Catering Lead",
+            "olivia": "Workshop Support",
+            "riham": "Workshop Lead",
+            "theo": "Reception Duty",
             "amisha": "Catering Setup",
             "mentors": {"role": "Supervision", "location": "LT / Park"}
           }
         },
         {
-          "start": "14:00", "end": "15:00", "location": "LT", "participants": "Lunch",
+          "start": "14:30", "end": "15:30", "location": "LT", "participants": "Lunch",
           "staff": {
             "ontik": "Catering",
             "dev": "Catering",
@@ -543,34 +559,18 @@
           }
         },
         {
-          "start": "15:00", "end": "15:30", "location": "LT", "participants": "Filming workshop (optional)",
+          "start": "15:30", "end": "16:00", "location": "Park / LT", "participants": "Off-site filming", "participantLocation": "Park", "staffLocation": "LT",
           "staff": {
-            "ontik": "Event Lead",
-            "dev": "Working Space",
-            "hayley": "Workshop Support",
-            "joshua": "Station",
+            "ontik": "Park + Event Lead",
+            "dev": "Park",
+            "hayley": "Park",
+            "joshua": "Park",
             "justin": "Station",
             "meher": "Lunch Pack-Up",
-            "olivia": "Workshop Support",
-            "riham": "Workshop Lead",
-            "theo": "Reception Duty",
+            "olivia": "Reception Duty",
+            "riham": "Station",
+            "theo": "Park",
             "amisha": "Lunch Pack-Up",
-            "mentors": {"role": "Supervision", "location": "LT / Park"}
-          }
-        },
-        {
-          "start": "15:30", "end": "16:00", "location": "LT", "participants": "Filming workshop (optional)",
-          "staff": {
-            "ontik": "Event Lead",
-            "dev": "Working Space",
-            "hayley": "Workshop Support",
-            "joshua": "Station",
-            "justin": "Station",
-            "meher": "Reception Duty",
-            "olivia": "Workshop Support",
-            "riham": "Workshop Lead",
-            "theo": "Station",
-            "amisha": "Filmmaking Rooms",
             "mentors": {"role": "Supervision", "location": "LT / Park"}
           }
         },
